@@ -6,14 +6,14 @@
 static inline void* descriptorJ2C(const std::string &value)
 {
     long long int r;
-    std::istringstream(value) >> r;
+    std::istringstream(value) >> std::hex >> r;
     return (void *) r;
 }
 
 static inline std::string descriptorC2J(void* value)
 {
     std::stringstream ss;
-    ss << (long long int) value;
+    ss << std::hex << (long long int) value;
     return ss.str();
 }
 
@@ -29,7 +29,7 @@ extern "C" JNIEXPORT jstring JNICALL
 Java_com_commandus_vapidchatter_wpn_wpnAndroid_openEnv
 (
     JNIEnv* env,
-    jobject thisObject,
+    jobject  __unused thisObject,
     jstring fileName
 )
 {
@@ -43,7 +43,7 @@ extern "C" JNIEXPORT void JNICALL
 Java_com_commandus_vapidchatter_wpn_wpnAndroid_closeEnv
 (
     JNIEnv* env,
-    jobject thisObject,
+    jobject __unused thisObject,
     jstring descriptor
 )
 {
@@ -54,18 +54,41 @@ extern "C" JNIEXPORT void JNICALL
 Java_com_commandus_vapidchatter_wpn_wpnAndroid_saveEnv
 (
     JNIEnv* env,
-    jobject thisObject,
+    jobject __unused thisObject,
     jstring descriptor
 )
 {
     saveEnv(descriptorJ2C(env->GetStringUTFChars(descriptor, NULL)));
 }
 
+extern "C" JNIEXPORT jint JNICALL
+Java_com_commandus_vapidchatter_wpn_wpnAndroid_envErrorCode
+(
+        JNIEnv* env,
+        jobject __unused thisObject,
+        jstring descriptor
+)
+{
+    return envErrorCode(descriptorJ2C(env->GetStringUTFChars(descriptor, NULL)));
+}
+
+extern "C" JNIEXPORT jstring JNICALL
+Java_com_commandus_vapidchatter_wpn_wpnAndroid_envErrorDescription
+(
+        JNIEnv* env,
+        jobject __unused thisObject,
+        jstring descriptor
+)
+{
+    std::string r = envErrorDescription(descriptorJ2C(env->GetStringUTFChars(descriptor, NULL)));
+    return env->NewStringUTF(r.c_str());
+}
+
 extern "C" JNIEXPORT jstring JNICALL
 Java_com_commandus_vapidchatter_wpn_wpnAndroid_env2json
 (
     JNIEnv* env,
-    jobject thisObject,
+    jobject __unused thisObject,
     jstring descriptor
 )
 {
@@ -75,11 +98,11 @@ Java_com_commandus_vapidchatter_wpn_wpnAndroid_env2json
 
 extern "C" JNIEXPORT jstring JNICALL
 Java_com_commandus_vapidchatter_wpn_wpnAndroid_openRegistryClientEnv
-        (
-                JNIEnv* env,
-                jobject thisObject,
-                jstring descriptor
-        )
+(
+        JNIEnv* env,
+        jobject __unused thisObject,
+        jstring descriptor
+)
 {
     void *r = openRegistryClientEnv(descriptorJ2C(env->GetStringUTFChars(descriptor, NULL)));
     return env->NewStringUTF(descriptorC2J(r).c_str());
@@ -87,22 +110,46 @@ Java_com_commandus_vapidchatter_wpn_wpnAndroid_openRegistryClientEnv
 
 extern "C" JNIEXPORT void JNICALL
 Java_com_commandus_vapidchatter_wpn_wpnAndroid_closeRegistryClientEnv
-        (
-                JNIEnv* env,
-                jobject thisObject,
-                jstring descriptor
-        )
+(
+        JNIEnv* env,
+        jobject __unused thisObject,
+        jstring descriptor
+)
 {
     closeRegistryClientEnv(descriptorJ2C(env->GetStringUTFChars(descriptor, NULL)));
 }
 
+extern "C" JNIEXPORT jint JNICALL
+Java_com_commandus_vapidchatter_wpn_wpnAndroid_regErrorCode
+(
+        JNIEnv* env,
+        jobject __unused thisObject,
+        jstring descriptor
+)
+{
+    return regErrorCode(descriptorJ2C(env->GetStringUTFChars(descriptor, NULL)));
+}
+
+extern "C" JNIEXPORT jstring JNICALL
+Java_com_commandus_vapidchatter_wpn_wpnAndroid_regErrorDescription
+(
+        JNIEnv* env,
+        jobject __unused thisObject,
+        jstring descriptor
+)
+{
+    std::string r = regErrorDescription(descriptorJ2C(env->GetStringUTFChars(descriptor, NULL)));
+    return env->NewStringUTF(r.c_str());
+}
+
 extern "C" JNIEXPORT jboolean JNICALL
 Java_com_commandus_vapidchatter_wpn_wpnAndroid_validateRegistration
-        (
-                JNIEnv* env,
-                jobject thisObject,
-                jstring descriptor
-        )
+(
+        JNIEnv* env,
+        jobject __unused thisObject,
+        jstring descriptor
+)
 {
-    return validateRegistration(descriptorJ2C(env->GetStringUTFChars(descriptor, NULL)));
+    return static_cast<jboolean>(validateRegistration(
+            descriptorJ2C(env->GetStringUTFChars(descriptor, NULL))));
 }

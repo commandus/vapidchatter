@@ -1,6 +1,10 @@
 package com.commandus.vapidchatter;
 
+import com.commandus.vapidchatter.wpn.wpnAndroid;
+
 import org.junit.Test;
+
+import java.lang.reflect.Field;
 
 import static org.junit.Assert.*;
 
@@ -9,9 +13,8 @@ import static org.junit.Assert.*;
  *
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
-public class ExampleUnitTest {
+public class WpnUnitTest {
     @Test
-    public void addition_isCorrect() {
-        assertEquals(4, 2 + 2);
+    public void version() {
     }
 }

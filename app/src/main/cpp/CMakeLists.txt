@@ -175,6 +175,7 @@ set(WPNLIBSRC
         ${WPN_ROOT}/utiljson.cpp
         ${WPN_ROOT}/config-filename.cpp
         ${WPN_ROOT}/vapid-api.cpp
+        ${WPN_ROOT}/errlist.cpp
 
         ${MCS_GEN_ROOT}/mcs.pb.cc
         ${MCS_GEN_ROOT}/android_checkin.pb.cc
