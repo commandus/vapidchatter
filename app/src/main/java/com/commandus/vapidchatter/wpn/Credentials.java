@@ -36,8 +36,8 @@ public class Credentials {
     @Override
     public String toString() {
         return "{"
-            + "\"appId\": " + appId
-            + ", \"androidId\": " + androidId
+            + "\"appId\": \"" + appId
+            + "\", \"androidId\": " + androidId
             + ", \"securityToken\": " + securityToken
             + ", \"GCMToken\": \"" + GCMToken + "\"}";
     }
@@ -61,6 +61,16 @@ public class Credentials {
             }
         } else {
             androidId = "";
+        }
+
+        if (value.has("securityToken")) {
+            try {
+                securityToken = value.getString("securityToken");
+            } catch (JSONException e) {
+                securityToken = "";
+            }
+        } else {
+            securityToken = "";
         }
 
         if (value.has("GCMToken")) {

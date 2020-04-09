@@ -12,6 +12,7 @@ class Subscriptions {
     private static final String TAG = Subscriptions.class.getSimpleName();
     public ArrayList<Subscription> subscriptions;
     public Subscriptions(JSONArray values) {
+        reset();
         parse(values);
     }
 
@@ -20,14 +21,13 @@ class Subscriptions {
     }
 
     private void reset() {
-
+        subscriptions = new ArrayList<>();
     }
 
     @androidx.annotation.NonNull
     @Override
     public String toString() {
         StringBuilder b = new StringBuilder();
-        b.append("{");
         if (subscriptions.size() > 0) {
             b.append(subscriptions.get(0).toString());
             for (int i = 1; i < subscriptions.size(); i++) {
@@ -35,7 +35,6 @@ class Subscriptions {
                         .append(subscriptions.get(0).toString());
             }
         }
-        b.append("}");
         return b.toString();
     }
 

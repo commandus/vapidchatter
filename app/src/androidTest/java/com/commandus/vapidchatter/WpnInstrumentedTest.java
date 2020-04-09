@@ -3,6 +3,7 @@ package com.commandus.vapidchatter;
 import android.content.Context;
 import android.util.Log;
 
+import com.commandus.vapidchatter.wpn.VapidClient;
 import com.commandus.vapidchatter.wpn.wpnAndroid;
 
 import androidx.test.platform.app.InstrumentationRegistry;
@@ -23,7 +24,7 @@ public class WpnInstrumentedTest {
     private static final String TAG = WpnInstrumentedTest.class.getSimpleName();
 
     @Test
-    public void printVersion() {
+    public void check01() {
         // Context of the app under test.
         Log.i(TAG, "=================================");
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
@@ -62,4 +63,27 @@ public class WpnInstrumentedTest {
         wpnAndroid.closeEnv(env);
         Log.i(TAG, "=================================");
     }
+
+    @Test
+    public void check02() {
+        Log.i(TAG, "=================================");
+        // Context of the app under test.
+        Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
+        VapidClient c = new VapidClient(appContext);
+        Log.i(TAG, c.config.toString());
+        Log.i(TAG, "=================================");
+    }
+
+    @Test
+    public void check03() {
+        Log.i(TAG, "=================================");
+        // Context of the app under test.
+        Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
+        String filename = appContext.getFilesDir() + "/wpn.js";
+        Log.i(TAG, "config file: " + filename);
+        VapidClient c = new VapidClient(filename);
+        Log.i(TAG, c.config.toString());
+        Log.i(TAG, "=================================");
+    }
+
 }
