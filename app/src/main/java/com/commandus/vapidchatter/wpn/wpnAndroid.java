@@ -7,8 +7,9 @@ public class wpnAndroid {
     }
 
     public static native String version();
-    public static native String openEnv(String filename);
+    public static native boolean checkVapidPublicKey(String vapidPublicKey);
 
+    public static native String openEnv(String filename);
     public static native void closeEnv(String descriptor);
     public static native void saveEnv(String descriptor);
     public static native String env2json(String descriptor);

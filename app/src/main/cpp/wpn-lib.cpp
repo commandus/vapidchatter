@@ -25,6 +25,42 @@ Java_com_commandus_vapidchatter_wpn_wpnAndroid_version(
     return env->NewStringUTF(r.c_str());
 }
 
+extern "C" JNIEXPORT jboolean JNICALL
+Java_com_commandus_vapidchatter_wpn_wpnAndroid_checkVapidPublicKey
+        (
+                JNIEnv* env,
+                jobject  __unused thisObject,
+                jstring vapidPublicKey
+        )
+{
+    std::string v(env->GetStringUTFChars(vapidPublicKey, NULL));
+    return static_cast<jboolean> (isPublicKeyValid(v));
+}
+
+extern "C" JNIEXPORT jboolean JNICALL
+Java_com_commandus_vapidchatter_wpn_wpnAndroid_checkVapidPrivateKey
+        (
+                JNIEnv* env,
+                jobject  __unused thisObject,
+                jstring vapidPrivateKey
+        )
+{
+    std::string v(env->GetStringUTFChars(vapidPrivateKey, NULL));
+    return static_cast<jboolean> (isPrivateKeyValid(v));
+}
+
+extern "C" JNIEXPORT jboolean JNICALL
+Java_com_commandus_vapidchatter_wpn_wpnAndroid_checkVapidAuthSecretKey
+        (
+                JNIEnv* env,
+                jobject  __unused thisObject,
+                jstring vapidAuthSecret
+        )
+{
+    std::string v(env->GetStringUTFChars(vapidAuthSecret, NULL));
+    return static_cast<jboolean> (isAuthSecretValid(v));
+}
+
 extern "C" JNIEXPORT jstring JNICALL
 Java_com_commandus_vapidchatter_wpn_wpnAndroid_openEnv
 (
@@ -33,7 +69,6 @@ Java_com_commandus_vapidchatter_wpn_wpnAndroid_openEnv
     jstring fileName
 )
 {
-    std::string proto_path(env->GetStringUTFChars(fileName, NULL));
     std::string fn(env->GetStringUTFChars(fileName, NULL));
     void *retenv = openEnv(fn);
     return env->NewStringUTF(descriptorC2J(retenv).c_str());
