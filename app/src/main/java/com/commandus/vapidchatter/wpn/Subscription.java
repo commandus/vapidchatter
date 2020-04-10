@@ -11,7 +11,7 @@ import org.json.JSONObject;
  *  "publicKey": "BMWbr4dF-V8-fdxch8ZaWrGMgvnF_gJ4sQAGJ4ByUKs7hDQmaixBuJkKvoXi6RYYL2DtOtU7Ktig2-IfowSsb4A",
  *  "id": 0
  */
-class Subscription {
+public class Subscription {
     public String id;
     public String name;
     public String endpoint;
@@ -19,6 +19,15 @@ class Subscription {
 
     public Subscription(JSONObject value) {
         parse(value);
+    }
+
+    public Subscription(String value) {
+        try {
+            JSONObject v = new JSONObject(value);
+            parse(v);
+        } catch (JSONException e) {
+            reset();
+        }
     }
 
     public Subscription() {

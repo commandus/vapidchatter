@@ -188,3 +188,22 @@ Java_com_commandus_vapidchatter_wpn_wpnAndroid_validateRegistration
     return static_cast<jboolean>(validateRegistration(
             descriptorJ2C(env->GetStringUTFChars(descriptor, NULL))));
 }
+
+
+extern "C" JNIEXPORT jstring JNICALL
+Java_com_commandus_vapidchatter_wpn_wpnAndroid_subscribe2VapidPublicKeyJson
+(
+        JNIEnv* env,
+        jobject __unused thisObject,
+        jstring descriptor,
+        jstring key
+)
+{
+    std::string jk(env->GetStringUTFChars(key, NULL));
+    std::string r;
+    if (!subscribe2VapidPublicKey(r,
+            descriptorJ2C(env->GetStringUTFChars(descriptor, NULL)), jk)) {
+        return NULL;
+    }
+    return env->NewStringUTF(r.c_str());
+}

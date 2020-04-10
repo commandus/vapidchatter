@@ -4,4 +4,5 @@
     <string name="label_vapid_key">Enter key</string>
     <string name="action_enter_vapid_key">Enter key</string>
     <string name="description_enter_vapid_key">Enter VAPID key</string>
+    <string name="msg_err_subscribe_to_vapid_key">Can not subscribe to VAPID key</string>
 </resources>

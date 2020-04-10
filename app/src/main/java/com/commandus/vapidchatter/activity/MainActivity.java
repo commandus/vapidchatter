@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -15,6 +16,7 @@ import com.commandus.vapidchatter.wpn.*;
 
 public class MainActivity extends AppCompatActivity {
     private static final int RET_ENTER_KEY = 1;
+    private static final String TAG = MainActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +51,15 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case RET_ENTER_KEY:
+                if (resultCode == 0) {
+                    if (data != null) {
+                        String s = data.getStringExtra(Settings.SUBSCRIPTION);
+                        if (s != null) {
+                            Subscription sub = new Subscription(s);
+                            Log.d(TAG, sub.toString());
+                        }
+                    }
+                }
                 break;
             default:
                 break;

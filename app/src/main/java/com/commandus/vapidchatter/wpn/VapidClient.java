@@ -12,12 +12,12 @@ public class VapidClient {
 
     public VapidClient(Context context) {
         this.filename = context.getFilesDir() + "/wpn.js";
-        loadConfig();
+        connect();
     }
 
     public VapidClient(String filename) {
         this.filename = filename;
-        loadConfig();
+        connect();
     }
 
     public int connect() {
@@ -69,4 +69,13 @@ public class VapidClient {
         }
         this.config = new Config(js);
     }
+
+    public String getEnvDescriptor() {
+        return envDescriptor;
+    }
+
+    public String getEegDescriptor() {
+        return regDescriptor;
+    }
+
 }

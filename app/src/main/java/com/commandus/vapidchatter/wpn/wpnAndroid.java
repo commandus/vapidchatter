@@ -22,4 +22,15 @@ public class wpnAndroid {
     public static native String regErrorDescription(String descriptor);
     public static native boolean validateRegistration(String descriptor);
 
+    public static Subscription subscribe2VapidPublicKey(String env, String key) {
+        String js = subscribe2VapidPublicKeyJson(env, key);
+        if (js == null) {
+            return null;
+        }
+        Subscription r = new Subscription(js);
+        return r;
+    }
+
+    private static native String subscribe2VapidPublicKeyJson(String env, String key);
+
 }
