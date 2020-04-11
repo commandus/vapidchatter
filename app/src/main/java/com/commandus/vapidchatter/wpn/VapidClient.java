@@ -5,7 +5,6 @@ import android.util.Log;
 
 public class VapidClient {
     private static final String TAG = VapidClient.class.getSimpleName();
-    public Config config;
     private String filename;
     private String envDescriptor;
     private String regDescriptor;
@@ -44,7 +43,6 @@ public class VapidClient {
 
     public void save() {
         String js = wpnAndroid.env2json(envDescriptor);
-        this.config = new Config(js);
         Log.i(TAG, "config: " + js);
 
         wpnAndroid.saveEnv(envDescriptor);
@@ -59,7 +57,7 @@ public class VapidClient {
         Log.i(TAG, "disconnected, save config file: " + filename);
     }
 
-    private void loadConfig() {
+    public Config getConfig() {
         String js;
         try {
             js = FileHelper.getStringFromFile(filename);
@@ -67,7 +65,7 @@ public class VapidClient {
             Log.e(TAG, e.toString());
             js = "";
         }
-        this.config = new Config(js);
+        return new Config(js);
     }
 
     public String getEnvDescriptor() {

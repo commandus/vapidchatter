@@ -18,13 +18,18 @@ import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
 public class MainActivity extends AppCompatActivity {
-    private static final int RET_ENTER_KEY = 1;
     private static final String TAG = MainActivity.class.getSimpleName();
+    private static final int RET_ENTER_KEY = 1;
+    private static final int RET_DISPLAY_KEY = 2;
+
+    private VapidClient mClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mClient = Settings.getVapidClient(this);
 
         // Example of a call to a native method
         TextView tv = findViewById(R.id.sample_text);
@@ -45,9 +50,17 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(this, EnterVapidKeyActivity.class);
                 startActivityForResult(intent, RET_ENTER_KEY);
                 break;
+            case R.id.action_display_vapid_key:
+                if (mClient != null) {
+                    Intent intent2 = new Intent(this, DisplayVapidKeyActivity.class);
+                    intent2.putExtra(Settings.VAPID_PUBLIC_KEY, mClient.getConfig().keys.publicKey);
+                    startActivityForResult(intent2, RET_DISPLAY_KEY);
+                }
+                break;
             case R.id.action_scan_vapid_key:
                 Settings.startScanCode(this, getString(R.string.prompt_scan_vapid_key));
                 break;
+
         }
         return super.onOptionsItemSelected(item);
     }

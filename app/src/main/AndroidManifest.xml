@@ -17,6 +17,7 @@
         android:hardwareAccelerated="true"
         >
         <activity android:name=".activity.EnterVapidKeyActivity"/>
+        <activity android:name=".activity.DisplayVapidKeyActivity"/>
         <!-- http://code.google.com/android/backup/signup.html -->
         <meta-data
             android:name="com.google.android.backup.api_key"
