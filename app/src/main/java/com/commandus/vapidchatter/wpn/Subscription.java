@@ -92,4 +92,11 @@ public class Subscription {
         }
     }
 
+    public String getToken() {
+        int p = endpoint.lastIndexOf('/');
+        if (p > 0)
+            return endpoint.substring(p);
+        else
+            return endpoint;
+    }
 }

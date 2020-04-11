@@ -5,12 +5,7 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.KeyEvent;
-import android.view.View;
-import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.commandus.vapidchatter.R;
 import com.commandus.vapidchatter.wpn.Subscription;
@@ -21,12 +16,13 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
-public class DisplayVapidKeyActivity extends AppCompatActivity {
+public class DisplayQRCodeActivity extends AppCompatActivity {
 
-    private static final String TAG = DisplayVapidKeyActivity.class.getSimpleName();
+    private static final String TAG = DisplayQRCodeActivity.class.getSimpleName();
     private ImageView mImageViewQRCode;
-    private String mEnv;
     private String vapidPublicKey;
+    private String authSecret;
+    private String subscriptionRecord;
     private ConstraintLayout mLayoutDisplayQRCode;
 
     @Override
@@ -42,12 +38,18 @@ public class DisplayVapidKeyActivity extends AppCompatActivity {
             bar.setDisplayShowHomeEnabled(true);
         }
 
-        mEnv = Settings.getVapidClient(this).getEnvDescriptor();
-        vapidPublicKey = "";
         Intent intent = getIntent();
         if (intent != null) {
             vapidPublicKey = intent.getStringExtra(Settings.VAPID_PUBLIC_KEY);
+            authSecret = intent.getStringExtra(Settings.VAPID_AUTH_SECRET);
+            subscriptionRecord = intent.getStringExtra(Settings.SUBSCRIPTION);
         }
+        if (vapidPublicKey == null)
+            vapidPublicKey = "";
+        if (authSecret == null)
+            authSecret = "";
+        if (subscriptionRecord == null)
+            subscriptionRecord = "";
     }
 
     @Override
@@ -56,7 +58,6 @@ public class DisplayVapidKeyActivity extends AppCompatActivity {
         showQRCode();
     }
 
-
     private void showQRCode() {
         if (mImageViewQRCode != null) {
             DisplayMetrics metrics = getResources().getDisplayMetrics();
@@ -64,7 +65,20 @@ public class DisplayVapidKeyActivity extends AppCompatActivity {
             int h = metrics.heightPixels;
             if (w > h)
                 w = h;
+
+            String value;
             if (!vapidPublicKey.isEmpty()) {
+                value = vapidPublicKey + "," + authSecret;
+            } else {
+                if (!subscriptionRecord.isEmpty()) {
+                    Subscription s = new Subscription(subscriptionRecord);
+                    value = s.getToken();
+                } else {
+                    value = "";
+                }
+            }
+
+            if (!value.isEmpty()) {
                 try {
                     BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
                     Bitmap bitmap = barcodeEncoder.encodeBitmap(vapidPublicKey, BarcodeFormat.QR_CODE, w, w);

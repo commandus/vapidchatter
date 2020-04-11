@@ -9,5 +9,8 @@
     <string name="msg_scan_code_cancelled">Scan cancelled</string>
     <string name="prompt_scan_code_processing">QR code processing..</string>
     <string name="notification_channel_id">com.commandus.vapidchatter</string>
-    <string name="description_display_vapid_key">Display QR code</string>
+    <string name="description_display_vapid_key">Display QR code 1</string>
+    <string name="action_display_vapid_key">Display QR code 1</string>
+    <string name="action_display_subscription">Display QR code 2</string>
+    <string name="action_scan_vapid_key">Scan QR code</string>
 </resources>

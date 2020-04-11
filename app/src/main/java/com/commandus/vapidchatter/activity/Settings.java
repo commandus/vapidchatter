@@ -16,8 +16,8 @@ import static android.content.ClipDescription.MIMETYPE_TEXT_PLAIN;
 
 public class Settings {
     public static final String VAPID_PUBLIC_KEY = "vapidPublicKey";
+    public static final String VAPID_AUTH_SECRET = "authSecret";
     public static final String SUBSCRIPTION = "subscription";
-    public static final String NICKNAME = "nickname";
 
     private static final String TAG = Settings.class.getSimpleName();
 

@@ -52,8 +52,16 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.action_display_vapid_key:
                 if (mClient != null) {
-                    Intent intent2 = new Intent(this, DisplayVapidKeyActivity.class);
+                    Intent intent2 = new Intent(this, DisplayQRCodeActivity.class);
                     intent2.putExtra(Settings.VAPID_PUBLIC_KEY, mClient.getConfig().keys.publicKey);
+                    intent2.putExtra(Settings.VAPID_AUTH_SECRET, mClient.getConfig().keys.authSecret);
+                    startActivityForResult(intent2, RET_DISPLAY_KEY);
+                }
+                break;
+            case R.id.action_display_subscription:
+                if (mClient != null) {
+                    Intent intent2 = new Intent(this, DisplayQRCodeActivity.class);
+                    intent2.putExtra(Settings.SUBSCRIPTION, mClient.getConfig().keys.publicKey);
                     startActivityForResult(intent2, RET_DISPLAY_KEY);
                 }
                 break;
