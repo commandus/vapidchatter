@@ -1,6 +1,8 @@
 package com.commandus.vapidchatter.activity;
 
+import android.app.Activity;
 import android.content.ClipData;
+import android.content.ClipDescription;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.util.Log;
@@ -8,12 +10,14 @@ import android.util.Log;
 import com.commandus.vapidchatter.wpn.Subscription;
 import com.commandus.vapidchatter.wpn.VapidClient;
 import com.commandus.vapidchatter.wpn.wpnAndroid;
+import com.google.zxing.integration.android.IntentIntegrator;
 
 import static android.content.ClipDescription.MIMETYPE_TEXT_PLAIN;
 
 public class Settings {
     public static final String VAPID_PUBLIC_KEY = "vapidPublicKey";
     public static final String SUBSCRIPTION = "subscription";
+    public static final String NICKNAME = "nickname";
 
     private static final String TAG = Settings.class.getSimpleName();
 
@@ -38,9 +42,13 @@ public class Settings {
         String pasteData = "";
         if (clipboard != null && clipboard.hasPrimaryClip()) {
             try {
-                if (clipboard.getPrimaryClipDescription().hasMimeType(MIMETYPE_TEXT_PLAIN)) {
-                    ClipData.Item item = clipboard.getPrimaryClip().getItemAt(0);
-                    pasteData = item.getText().toString();
+                ClipDescription clipDescription = clipboard.getPrimaryClipDescription();
+                if (clipDescription != null && clipDescription.hasMimeType(MIMETYPE_TEXT_PLAIN)) {
+                    ClipData clip = clipboard.getPrimaryClip();
+                    if (clip != null) {
+                        ClipData.Item item = clip.getItemAt(0);
+                        pasteData = item.getText().toString();
+                    }
                 }
             } catch (NullPointerException e) {
                 Log.e(TAG, e.toString());
@@ -53,4 +61,13 @@ public class Settings {
         String env = Settings.getVapidClient(context).getEnvDescriptor();
         return wpnAndroid.subscribe2VapidPublicKey(env, key);
     }
+
+    public static void startScanCode(Activity context, String prompt) {
+        IntentIntegrator integrator = new IntentIntegrator(context);
+        integrator.setOrientationLocked(false);
+        integrator.setPrompt(prompt);
+        integrator.setCaptureActivity(CaptureActivityPortrait.class);
+        integrator.initiateScan();
+    }
+
 }

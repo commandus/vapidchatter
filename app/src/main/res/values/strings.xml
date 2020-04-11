@@ -5,4 +5,8 @@
     <string name="action_enter_vapid_key">Enter key</string>
     <string name="description_enter_vapid_key">Enter VAPID key</string>
     <string name="msg_err_subscribe_to_vapid_key">Can not subscribe to VAPID key</string>
+    <string name="prompt_scan_vapid_key">Scam QR code</string>
+    <string name="msg_scan_code_cancelled">Scan cancelled</string>
+    <string name="prompt_scan_code_processing">QR code processing..</string>
+    <string name="notification_channel_id">com.commandus.vapidchatter</string>
 </resources>

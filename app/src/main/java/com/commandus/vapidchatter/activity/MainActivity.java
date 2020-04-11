@@ -10,9 +10,12 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.commandus.vapidchatter.R;
 import com.commandus.vapidchatter.wpn.*;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 
 public class MainActivity extends AppCompatActivity {
     private static final int RET_ENTER_KEY = 1;
@@ -42,6 +45,9 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(this, EnterVapidKeyActivity.class);
                 startActivityForResult(intent, RET_ENTER_KEY);
                 break;
+            case R.id.action_scan_vapid_key:
+                Settings.startScanCode(this, getString(R.string.prompt_scan_vapid_key));
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -62,8 +68,20 @@ public class MainActivity extends AppCompatActivity {
                 }
                 break;
             default:
-                break;
+                IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+                if (result != null) {
+                    if (result.getContents() == null) {
+                        Toast.makeText(this, getString(R.string.msg_scan_code_cancelled), Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(this, getString(R.string.prompt_scan_code_processing), Toast.LENGTH_SHORT).show();
+                        String scanned = result.getContents();
+                        Subscription sub = Settings.subscribe2VapidKey(MainActivity.this, scanned);
+                        Log.d(TAG, sub.toString());
+                    }
+                } else {
+                    super.onActivityResult(requestCode, resultCode, data);
+                }
+            }
         }
-    }
 
 }
