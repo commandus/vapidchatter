@@ -13,4 +13,7 @@
     <string name="action_display_vapid_key">Display QR code 1</string>
     <string name="action_display_subscription">Display QR code 2</string>
     <string name="action_scan_vapid_key">Scan QR code</string>
+    <string name="hint_auth_secret">auth secret</string>
+    <string name="label_auth_secret">auth secret</string>
+    <string name="msg_scan_code_wrong">Invalid QR code</string>
 </resources>

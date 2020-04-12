@@ -50,7 +50,7 @@ Java_com_commandus_vapidchatter_wpn_wpnAndroid_checkVapidPrivateKey
 }
 
 extern "C" JNIEXPORT jboolean JNICALL
-Java_com_commandus_vapidchatter_wpn_wpnAndroid_checkVapidAuthSecretKey
+Java_com_commandus_vapidchatter_wpn_wpnAndroid_checkVapidAuthSecret
         (
                 JNIEnv* env,
                 jobject  __unused thisObject,
@@ -196,13 +196,17 @@ Java_com_commandus_vapidchatter_wpn_wpnAndroid_subscribe2VapidPublicKeyJson
         JNIEnv* env,
         jobject __unused thisObject,
         jstring descriptor,
-        jstring key
+        jstring key,
+        jstring authSecret
+
 )
 {
     std::string jk(env->GetStringUTFChars(key, NULL));
+    std::string jAuthSecret(env->GetStringUTFChars(authSecret, NULL));
     std::string r;
     if (!subscribe2VapidPublicKey(r,
-            descriptorJ2C(env->GetStringUTFChars(descriptor, NULL)), jk)) {
+                                  descriptorJ2C(env->GetStringUTFChars(descriptor, NULL)), jk,
+                                  jAuthSecret)) {
         return NULL;
     }
     return env->NewStringUTF(r.c_str());

@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void displaySubscriptionQRCode() {
         Intent intent2 = new Intent(this, DisplayQRCodeActivity.class);
-        intent2.putExtra(Settings.VAPID_TOKEN, mSubscription.getToken());
+        intent2.putExtra(Settings.SUBSCRIPTION, mSubscription.toString());
         startActivityForResult(intent2, RET_DISPLAY_KEY);
     }
 
@@ -84,12 +84,13 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case RET_ENTER_KEY:
-                if (resultCode == 0) {
+                if (resultCode == RESULT_OK) {
                     if (data != null) {
                         String s = data.getStringExtra(Settings.SUBSCRIPTION);
                         if (s != null) {
                             mSubscription = new Subscription(s);
                             Log.d(TAG, mSubscription.toString());
+                            displaySubscriptionQRCode();
                         }
                     }
                 }
@@ -102,9 +103,14 @@ public class MainActivity extends AppCompatActivity {
                     } else {
                         Toast.makeText(this, getString(R.string.prompt_scan_code_processing), Toast.LENGTH_SHORT).show();
                         String scanned = result.getContents();
-                        mSubscription = Settings.subscribe2VapidKey(MainActivity.this, scanned);
-                        Log.d(TAG, mSubscription.toString());
-                        displaySubscriptionQRCode();
+                        String[] sa = scanned.split(",");
+                        if (sa.length == 2) {
+                            mSubscription = Settings.subscribe2VapidKey(MainActivity.this, sa[0], sa[1]);
+                            Log.d(TAG, mSubscription.toString());
+                            displaySubscriptionQRCode();
+                        } else {
+                            Toast.makeText(this, getString(R.string.msg_scan_code_wrong), Toast.LENGTH_LONG).show();
+                        }
                     }
                 } else {
                     super.onActivityResult(requestCode, resultCode, data);

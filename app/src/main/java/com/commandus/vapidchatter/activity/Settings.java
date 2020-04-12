@@ -38,6 +38,13 @@ public class Settings {
         return wpnAndroid.checkVapidPublicKey(vapidPublicKey);
     }
 
+    public static boolean checkVapidAuthSecret(String authSecret) {
+        if (authSecret == null) {
+            return false;
+        }
+        return wpnAndroid.checkVapidAuthSecret(authSecret);
+    }
+
     public static String getClipboardText(Context context) {
         ClipboardManager clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
         String pasteData = "";
@@ -58,9 +65,10 @@ public class Settings {
         return pasteData;
     }
 
-    public static Subscription subscribe2VapidKey(Context context, String key) {
+    public static Subscription subscribe2VapidKey(
+            Context context, String vapidPublicKey, String authSecret) {
         String env = Settings.getVapidClient(context).getEnvDescriptor();
-        return wpnAndroid.subscribe2VapidPublicKey(env, key);
+        return wpnAndroid.subscribe2VapidPublicKey(env, vapidPublicKey, authSecret);
     }
 
     public static void startScanCode(Activity context, String prompt) {

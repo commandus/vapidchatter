@@ -31,6 +31,29 @@
         android:ems="10"
         android:hint="@string/hint_vapid_key"
         android:inputType="text"
+        app:layout_constraintBottom_toTopOf="@+id/textViewLabelAuthSecret"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="parent"
+        android:layout_width="fill_parent"
+        android:autofillHints="base64" />
+
+    <TextView
+        android:id="@+id/textViewLabelAuthSecret"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:text="@string/label_auth_secret"
+        app:layout_constraintBottom_toTopOf="@+id/editTextAuthSecret"
+        app:layout_constraintLeft_toLeftOf="@+id/editTextAuthSecret"
+        />
+
+    <EditText
+        android:id="@+id/editTextAuthSecret"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:ems="10"
+        android:hint="@string/hint_auth_secret"
+        android:inputType="text"
         app:layout_constraintBottom_toTopOf="@+id/guideline"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toLeftOf="parent"

@@ -8,7 +8,7 @@ public class wpnAndroid {
 
     public static native String version();
     public static native boolean checkVapidPublicKey(String vapidPublicKey);
-
+    public static native boolean checkVapidAuthSecret(String authSecret);
     public static native String openEnv(String filename);
     public static native void closeEnv(String descriptor);
     public static native void saveEnv(String descriptor);
@@ -22,15 +22,13 @@ public class wpnAndroid {
     public static native String regErrorDescription(String descriptor);
     public static native boolean validateRegistration(String descriptor);
 
-    public static Subscription subscribe2VapidPublicKey(String env, String key) {
-        String js = subscribe2VapidPublicKeyJson(env, key);
+    public static Subscription subscribe2VapidPublicKey(String env, String key, String authSecret) {
+        String js = subscribe2VapidPublicKeyJson(env, key, authSecret);
         if (js == null) {
             return null;
         }
-        Subscription r = new Subscription(js);
-        return r;
+        return new Subscription(js);
     }
 
-    private static native String subscribe2VapidPublicKeyJson(String env, String key);
-
+    private static native String subscribe2VapidPublicKeyJson(String env, String key, String authSecret);
 }

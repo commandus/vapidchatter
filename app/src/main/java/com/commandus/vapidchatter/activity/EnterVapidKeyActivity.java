@@ -14,9 +14,14 @@ import android.widget.Toast;
 import com.commandus.vapidchatter.R;
 import com.commandus.vapidchatter.wpn.Subscription;
 
+/**
+ * Copy e.g.
+ * BMWbr4dF-V8-fdxch8ZaWrGMgvnF_gJ4sQAGJ4ByUKs7hDQmaixBuJkKvoXi6RYYL2DtOtU7Ktig2-IfowSsb4A,Wyg-77tbRl79qfDHL6EWGQ
+ */
 public class EnterVapidKeyActivity extends AppCompatActivity {
 
     private EditText mEditTextVapidKey;
+    private EditText mEditTextAuthSecret;
     private ImageButton mButtonVapidKey;
     private String mEnv;
 
@@ -25,6 +30,7 @@ public class EnterVapidKeyActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_enter_vapid_key);
         mEditTextVapidKey = findViewById(R.id.editTextVapidKey);
+        mEditTextAuthSecret = findViewById(R.id.editTextAuthSecret);
         mButtonVapidKey = findViewById(R.id.imageButtonEnterVapidKey);
         ActionBar bar = getSupportActionBar();
         if (bar != null) {
@@ -34,21 +40,53 @@ public class EnterVapidKeyActivity extends AppCompatActivity {
 
         mEnv = Settings.getVapidClient(this).getEnvDescriptor();
         String vapidPublicKey = "";
+        String authSecret = "";
         Intent intent = getIntent();
         if (intent != null) {
             vapidPublicKey = intent.getStringExtra(Settings.VAPID_PUBLIC_KEY);
+            authSecret = intent.getStringExtra(Settings.VAPID_AUTH_SECRET);
         }
         if (vapidPublicKey == null || vapidPublicKey.isEmpty()) {
-            vapidPublicKey = Settings.getClipboardText(this);
+            String cs = Settings.getClipboardText(this);
+            // clipboard can contain public key or public key with auth(comma delimited)
+            String[] d = cs.split(",");
+            if (d.length == 2) {
+                vapidPublicKey = d[0];
+                authSecret = d[1];
+            } else {
+                vapidPublicKey = cs;
+            }
         }
         if (Settings.checkVapidPublicKey(vapidPublicKey)) {
             if (mEditTextVapidKey != null) {
                 mEditTextVapidKey.setText(vapidPublicKey);
             }
         }
+        if (Settings.checkVapidAuthSecret(authSecret)) {
+            if (mEditTextAuthSecret != null) {
+                mEditTextAuthSecret.setText(authSecret);
+            }
+        }
 
         if (mEditTextVapidKey != null) {
             mEditTextVapidKey.setOnKeyListener(new View.OnKeyListener() {
+                public boolean onKey(View v, int keyCode, KeyEvent event) {
+                    if (event.getAction() == KeyEvent.ACTION_DOWN) {
+                        switch (keyCode) {
+                            case KeyEvent.KEYCODE_DPAD_CENTER:
+                            case KeyEvent.KEYCODE_ENTER:
+                                save();
+                                return true;
+                            default:
+                                break;
+                        }
+                    }
+                    return false;
+                }
+            });
+        }
+        if (mEditTextAuthSecret != null) {
+            mEditTextAuthSecret.setOnKeyListener(new View.OnKeyListener() {
                 public boolean onKey(View v, int keyCode, KeyEvent event) {
                     if (event.getAction() == KeyEvent.ACTION_DOWN) {
                         switch (keyCode) {
@@ -76,8 +114,18 @@ public class EnterVapidKeyActivity extends AppCompatActivity {
     }
 
     private void save() {
+        String vapidPublicKey =  mEditTextVapidKey.getText().toString();
+        String authSecret = mEditTextAuthSecret.getText().toString();
+        if (vapidPublicKey.isEmpty() || authSecret.isEmpty()) {
+            return;
+        }
+        if (!Settings.checkVapidPublicKey(vapidPublicKey) || !Settings.checkVapidAuthSecret(authSecret)) {
+            return;
+        }
+
         Toast.makeText(this, getString(R.string.prompt_scan_code_processing), Toast.LENGTH_SHORT).show();
-        Subscription s = Settings.subscribe2VapidKey(EnterVapidKeyActivity.this, mEditTextVapidKey.getText().toString());
+        Subscription s = Settings.subscribe2VapidKey(EnterVapidKeyActivity.this,
+                vapidPublicKey, authSecret);
         if (s == null) {
             Toast.makeText(EnterVapidKeyActivity.this, R.string.msg_err_subscribe_to_vapid_key, Toast.LENGTH_LONG).show();
         } else {

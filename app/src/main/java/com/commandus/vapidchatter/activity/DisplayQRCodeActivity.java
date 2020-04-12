@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.commandus.vapidchatter.R;
 import com.commandus.vapidchatter.wpn.Subscription;
@@ -50,6 +51,10 @@ public class DisplayQRCodeActivity extends AppCompatActivity {
             authSecret = "";
         if (subscriptionRecord == null)
             subscriptionRecord = "";
+        if (vapidPublicKey.isEmpty() && subscriptionRecord.isEmpty()) {
+            Toast.makeText(this, getString(R.string.msg_scan_code_wrong), Toast.LENGTH_LONG).show();
+            finish();
+        }
     }
 
     @Override
@@ -81,7 +86,7 @@ public class DisplayQRCodeActivity extends AppCompatActivity {
             if (!value.isEmpty()) {
                 try {
                     BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
-                    Bitmap bitmap = barcodeEncoder.encodeBitmap(vapidPublicKey, BarcodeFormat.QR_CODE, w, w);
+                    Bitmap bitmap = barcodeEncoder.encodeBitmap(value, BarcodeFormat.QR_CODE, w, w);
                     mImageViewQRCode.setImageBitmap(bitmap);
                 } catch(Exception e) {
                     Log.e(TAG, e.toString());
