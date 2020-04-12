@@ -23,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
     private static final int RET_DISPLAY_KEY = 2;
 
     private VapidClient mClient;
+    private Subscription mSubscription;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         mClient = Settings.getVapidClient(this);
+        mSubscription = new Subscription();
 
         // Example of a call to a native method
         TextView tv = findViewById(R.id.sample_text);
@@ -60,9 +62,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.action_display_subscription:
                 if (mClient != null) {
-                    Intent intent2 = new Intent(this, DisplayQRCodeActivity.class);
-                    intent2.putExtra(Settings.SUBSCRIPTION, mClient.getConfig().keys.publicKey);
-                    startActivityForResult(intent2, RET_DISPLAY_KEY);
+                    displaySubscriptionQRCode();
                 }
                 break;
             case R.id.action_scan_vapid_key:
@@ -71,6 +71,12 @@ public class MainActivity extends AppCompatActivity {
 
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void displaySubscriptionQRCode() {
+        Intent intent2 = new Intent(this, DisplayQRCodeActivity.class);
+        intent2.putExtra(Settings.VAPID_TOKEN, mSubscription.getToken());
+        startActivityForResult(intent2, RET_DISPLAY_KEY);
     }
 
     @Override
@@ -82,8 +88,8 @@ public class MainActivity extends AppCompatActivity {
                     if (data != null) {
                         String s = data.getStringExtra(Settings.SUBSCRIPTION);
                         if (s != null) {
-                            Subscription sub = new Subscription(s);
-                            Log.d(TAG, sub.toString());
+                            mSubscription = new Subscription(s);
+                            Log.d(TAG, mSubscription.toString());
                         }
                     }
                 }
@@ -96,8 +102,9 @@ public class MainActivity extends AppCompatActivity {
                     } else {
                         Toast.makeText(this, getString(R.string.prompt_scan_code_processing), Toast.LENGTH_SHORT).show();
                         String scanned = result.getContents();
-                        Subscription sub = Settings.subscribe2VapidKey(MainActivity.this, scanned);
-                        Log.d(TAG, sub.toString());
+                        mSubscription = Settings.subscribe2VapidKey(MainActivity.this, scanned);
+                        Log.d(TAG, mSubscription.toString());
+                        displaySubscriptionQRCode();
                     }
                 } else {
                     super.onActivityResult(requestCode, resultCode, data);
