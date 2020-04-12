@@ -16,4 +16,8 @@
     <string name="hint_auth_secret">auth secret</string>
     <string name="label_auth_secret">auth secret</string>
     <string name="msg_scan_code_wrong">Invalid QR code</string>
+    <string name="msg_link_wrong">Invalid code</string>
+    <string name="label_accept_shared_code_1">Do you want add</string>
+    <string name="label_accept_shared_code_vapid_key">to receive messages from</string>
+    <string name="description_accept">Accept</string>
 </resources>
