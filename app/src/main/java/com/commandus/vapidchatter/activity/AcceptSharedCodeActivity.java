@@ -3,7 +3,6 @@ package com.commandus.vapidchatter.activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -26,6 +25,7 @@ public class AcceptSharedCodeActivity extends AppCompatActivity {
     private String mEnv;
     private String vapidPublicKey;
     private String authSecret;
+    private String subscriptionToken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +43,7 @@ public class AcceptSharedCodeActivity extends AppCompatActivity {
         mEnv = Settings.getVapidClient(this).getEnvDescriptor();
         vapidPublicKey = "";
         authSecret = "";
+        subscriptionToken = "";
         Intent intent = getIntent();
 
 
@@ -52,27 +53,52 @@ public class AcceptSharedCodeActivity extends AppCompatActivity {
             if (data != null) {
                 vapidPublicKey = data.getQueryParameter(Settings.VAPID_PUBLIC_KEY);
                 authSecret = intent.getStringExtra(Settings.VAPID_AUTH_SECRET);
+                subscriptionToken = intent.getStringExtra(Settings.VAPID_TOKEN);
             }
         }
-        if (vapidPublicKey == null || vapidPublicKey.isEmpty()) {
-            Toast.makeText(this, getString(R.string.msg_link_wrong), Toast.LENGTH_LONG).show();
-        } else {
-            if (!Settings.checkVapidPublicKey(vapidPublicKey) || !Settings.checkVapidAuthSecret(authSecret)) {
+        if (subscriptionToken != null && !subscriptionToken.isEmpty()) {
+            if (!Settings.checkVapidToken(subscriptionToken)) {
                 Toast.makeText(this, getString(R.string.msg_link_wrong), Toast.LENGTH_LONG).show();
             } else {
                 if (mButtonAccept != null) {
                     mButtonAccept.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            save();
+                            saveSubscription();
                         }
                     });
+                }
+            }
+
+        } else {
+            if (vapidPublicKey == null || vapidPublicKey.isEmpty()) {
+                Toast.makeText(this, getString(R.string.msg_link_wrong), Toast.LENGTH_LONG).show();
+            } else {
+                if (!Settings.checkVapidPublicKey(vapidPublicKey) || !Settings.checkVapidAuthSecret(authSecret)) {
+                    Toast.makeText(this, getString(R.string.msg_link_wrong), Toast.LENGTH_LONG).show();
+                } else {
+                    if (mButtonAccept != null) {
+                        mButtonAccept.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                subscribeToCode();
+                            }
+                        });
+                    }
                 }
             }
         }
     }
 
-    private void save() {
+    private void saveSubscription() {
+        if (Settings.saveSubscription(this, subscriptionToken, authSecret)) {
+            Toast.makeText(this, R.string.msg_saved_subscription_successfully, Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(this, R.string.msg_err_save_subscription, Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private void subscribeToCode() {
         Subscription s = Settings.subscribe2VapidKey(this, vapidPublicKey, authSecret);
         if (s == null) {
             Toast.makeText(this, R.string.msg_err_subscribe_to_vapid_key, Toast.LENGTH_LONG).show();

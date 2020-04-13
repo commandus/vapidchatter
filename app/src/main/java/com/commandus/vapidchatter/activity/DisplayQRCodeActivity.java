@@ -5,6 +5,8 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -21,6 +23,7 @@ public class DisplayQRCodeActivity extends AppCompatActivity {
 
     private static final String TAG = DisplayQRCodeActivity.class.getSimpleName();
     private ImageView mImageViewQRCode;
+    private ImageButton mImageButtonShareQRCode;
     private String vapidPublicKey;
     private String authSecret;
     private String subscriptionRecord;
@@ -32,6 +35,7 @@ public class DisplayQRCodeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_display_vapid_key);
         mLayoutDisplayQRCode = findViewById(R.id.layoutDisplayQRCode);
         mImageViewQRCode = findViewById(R.id.imageViewQRCode);
+        mImageButtonShareQRCode = findViewById(R.id.imageButtonShareQRCode);
 
         ActionBar bar = getSupportActionBar();
         if (bar != null) {
@@ -55,6 +59,14 @@ public class DisplayQRCodeActivity extends AppCompatActivity {
             Toast.makeText(this, getString(R.string.msg_scan_code_wrong), Toast.LENGTH_LONG).show();
             finish();
         }
+        if (mImageButtonShareQRCode != null) {
+            mImageButtonShareQRCode.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    shareCode();
+                }
+            });
+        }
     }
 
     @Override
@@ -71,18 +83,7 @@ public class DisplayQRCodeActivity extends AppCompatActivity {
             if (w > h)
                 w = h;
 
-            String value;
-            if (!vapidPublicKey.isEmpty()) {
-                value = vapidPublicKey + "," + authSecret;
-            } else {
-                if (!subscriptionRecord.isEmpty()) {
-                    Subscription s = new Subscription(subscriptionRecord);
-                    value = s.getToken();
-                } else {
-                    value = "";
-                }
-            }
-
+            String value = getCode();
             if (!value.isEmpty()) {
                 try {
                     BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
@@ -95,10 +96,48 @@ public class DisplayQRCodeActivity extends AppCompatActivity {
         }
     }
 
+    private String getCode() {
+        String value;
+        if (!vapidPublicKey.isEmpty()) {
+            value = vapidPublicKey + "," + authSecret;
+        } else {
+            if (!subscriptionRecord.isEmpty()) {
+                Subscription s = new Subscription(subscriptionRecord);
+                value = s.getToken()  + "," + s.authSecret;
+            } else {
+                value = "";
+            }
+        }
+        return value;
+    }
+
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
+    }
+
+    private void shareCode() {
+        String value = getCode();
+        if (!value.isEmpty()) {
+            try {
+                Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                shareIntent.setType("text/plain");
+                shareIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.share_code));
+                String shareMessage = getString(R.string.msg_share_code) + " ";
+                if (!vapidPublicKey.isEmpty()) {
+                    shareMessage += Settings.getShareLink(vapidPublicKey, authSecret);
+                } else {
+                    Subscription s = new Subscription(subscriptionRecord);
+                    shareMessage += Settings.getShareLinkSubscription(s.getToken(), s.authSecret);
+                }
+
+                shareIntent.putExtra(Intent.EXTRA_TEXT, shareMessage);
+                startActivity(Intent.createChooser(shareIntent, getString(R.string.choose_share)));
+            } catch(Exception e) {
+                Log.e(TAG, e.toString());
+            }
+        }
     }
 
 }

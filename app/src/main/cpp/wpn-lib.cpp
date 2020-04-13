@@ -61,6 +61,18 @@ Java_com_commandus_vapidchatter_wpn_wpnAndroid_checkVapidAuthSecret
     return static_cast<jboolean> (isAuthSecretValid(v));
 }
 
+extern "C" JNIEXPORT jboolean JNICALL
+Java_com_commandus_vapidchatter_wpn_wpnAndroid_checkVapidToken
+        (
+                JNIEnv* env,
+                jobject  __unused thisObject,
+                jstring vapidAuthSecret
+        )
+{
+    std::string v(env->GetStringUTFChars(vapidAuthSecret, NULL));
+    return static_cast<jboolean> (isTokenValid(v));
+}
+
 extern "C" JNIEXPORT jstring JNICALL
 Java_com_commandus_vapidchatter_wpn_wpnAndroid_openEnv
 (

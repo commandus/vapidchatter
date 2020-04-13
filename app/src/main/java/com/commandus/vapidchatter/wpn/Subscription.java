@@ -16,6 +16,7 @@ public class Subscription {
     public String name;
     public String endpoint;
     public String publicKey;
+    public String authSecret;
 
     public Subscription(JSONObject value) {
         parse(value);
@@ -39,6 +40,7 @@ public class Subscription {
         name = "";
         endpoint = "";
         publicKey = "";
+        authSecret = "";
     }
 
     @androidx.annotation.NonNull
@@ -48,7 +50,9 @@ public class Subscription {
                 + "\"id\": " + id
                 + ", \"name\": \"" + name
                 + "\", \"endpoint\": \"" + endpoint
-                + "\", \"publicKey\": \"" + publicKey + "\"}";
+                + "\", \"publicKey\": \"" + publicKey
+                + "\", \"authSecret\": \"" + authSecret
+                + "\"}";
     }
 
     public void parse(JSONObject value) {
@@ -89,6 +93,15 @@ public class Subscription {
             }
         } else {
             publicKey = "";
+        }
+        if (value.has("authSecret")) {
+            try {
+                authSecret = value.getString("authSecret");
+            } catch (JSONException e) {
+                authSecret = "";
+            }
+        } else {
+            authSecret = "";
         }
     }
 

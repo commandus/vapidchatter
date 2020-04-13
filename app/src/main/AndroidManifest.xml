@@ -16,8 +16,6 @@
         android:theme="@style/AppTheme"
         android:hardwareAccelerated="true"
         >
-        <activity android:name=".activity.EnterVapidKeyActivity"/>
-        <activity android:name=".activity.DisplayQRCodeActivity"/>
         <!-- http://code.google.com/android/backup/signup.html -->
         <meta-data
             android:name="com.google.android.backup.api_key"
@@ -44,6 +42,18 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".activity.EnterVapidKeyActivity"/>
+        <activity android:name=".activity.DisplayQRCodeActivity"/>
+        <activity android:name=".activity.AcceptSharedCodeActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="https"
+                    android:host="vapidchatter.commandus.com"
+                    android:pathPrefix="/code" />
             </intent-filter>
         </activity>
         <activity

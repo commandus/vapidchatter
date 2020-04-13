@@ -12,15 +12,19 @@ import com.commandus.vapidchatter.wpn.VapidClient;
 import com.commandus.vapidchatter.wpn.wpnAndroid;
 import com.google.zxing.integration.android.IntentIntegrator;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+
 import static android.content.ClipDescription.MIMETYPE_TEXT_PLAIN;
 
 public class Settings {
     public static final String VAPID_PUBLIC_KEY = "vapidPublicKey";
     public static final String VAPID_AUTH_SECRET = "authSecret";
-    public static final String SUBSCRIPTION = "subscription";
     public static final String VAPID_TOKEN = "token";
+    public static final String SUBSCRIPTION = "subscription";
 
     private static final String TAG = Settings.class.getSimpleName();
+    private static final String LINK_PREFIX = "https://vapidchatter.commandus.com/code/?";
 
     private static VapidClient mVapidClient = null;
 
@@ -43,6 +47,13 @@ public class Settings {
             return false;
         }
         return wpnAndroid.checkVapidAuthSecret(authSecret);
+    }
+
+    public static boolean checkVapidToken(String subscriptionToken) {
+        if (subscriptionToken == null) {
+            return false;
+        }
+        return wpnAndroid.checkVapidToken(subscriptionToken);
     }
 
     public static String getClipboardText(Context context) {
@@ -77,6 +88,34 @@ public class Settings {
         integrator.setPrompt(prompt);
         integrator.setCaptureActivity(CaptureActivityPortrait.class);
         integrator.initiateScan();
+    }
+
+    public static String getShareLink(String publicKey, String auth) {
+        try {
+            return LINK_PREFIX
+                    + Settings.VAPID_PUBLIC_KEY + "=" + URLEncoder.encode(publicKey, "utf-8") + "&"
+                    + Settings.VAPID_AUTH_SECRET + "=" + URLEncoder.encode(auth, "utf-8");
+        } catch (UnsupportedEncodingException e) {
+            Log.e(TAG, e.toString());
+            return LINK_PREFIX;
+        }
+    }
+
+    public static String getShareLinkSubscription(String token, String authSecret) {
+        try {
+            return LINK_PREFIX
+                    + Settings.VAPID_TOKEN + "=" + URLEncoder.encode(token, "utf-8") + "&"
+                    + Settings.VAPID_AUTH_SECRET + "=" + URLEncoder.encode(authSecret, "utf-8");
+        } catch (UnsupportedEncodingException e) {
+            Log.e(TAG, e.toString());
+            return LINK_PREFIX;
+        }
+    }
+
+    public static boolean saveSubscription(Context context, String subscriptionToken, String authSecret) {
+        String env = Settings.getVapidClient(context).getEnvDescriptor();
+        int err = wpnAndroid.saveSubscription(env, subscriptionToken, authSecret);
+        return err == 0;
     }
 
 }

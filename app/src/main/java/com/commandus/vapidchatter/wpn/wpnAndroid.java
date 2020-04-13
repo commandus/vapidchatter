@@ -9,6 +9,9 @@ public class wpnAndroid {
     public static native String version();
     public static native boolean checkVapidPublicKey(String vapidPublicKey);
     public static native boolean checkVapidAuthSecret(String authSecret);
+    public static native boolean checkVapidPrivateKey(String vapidPrivateKey);
+    public static native boolean checkVapidToken(String subscriptionToken);
+
     public static native String openEnv(String filename);
     public static native void closeEnv(String descriptor);
     public static native void saveEnv(String descriptor);
@@ -31,4 +34,14 @@ public class wpnAndroid {
     }
 
     private static native String subscribe2VapidPublicKeyJson(String env, String key, String authSecret);
+
+    /**
+     *
+     * @param env   client ref
+     * @param subscriptionToken subscriuption token
+     * @param authSecret used as identifier to find out incomplete subscription
+     * @return true
+     */
+    public static native int saveSubscription(String env, String subscriptionToken, String authSecret);
+
 }
