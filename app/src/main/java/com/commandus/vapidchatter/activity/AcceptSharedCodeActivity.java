@@ -41,19 +41,15 @@ public class AcceptSharedCodeActivity extends AppCompatActivity {
 
 
         mEnv = Settings.getVapidClient(this).getEnvDescriptor();
-        vapidPublicKey = "";
-        authSecret = "";
-        subscriptionToken = "";
         Intent intent = getIntent();
-
 
         if (intent != null) {
             String action = intent.getAction();
             Uri data = intent.getData();
             if (data != null) {
                 vapidPublicKey = data.getQueryParameter(Settings.VAPID_PUBLIC_KEY);
-                authSecret = intent.getStringExtra(Settings.VAPID_AUTH_SECRET);
-                subscriptionToken = intent.getStringExtra(Settings.VAPID_TOKEN);
+                authSecret = data.getQueryParameter(Settings.VAPID_AUTH_SECRET);
+                subscriptionToken = data.getQueryParameter(Settings.VAPID_TOKEN);
             }
         }
         if (subscriptionToken != null && !subscriptionToken.isEmpty()) {

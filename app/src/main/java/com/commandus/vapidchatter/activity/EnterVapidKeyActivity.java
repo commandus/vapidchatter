@@ -17,6 +17,7 @@ import com.commandus.vapidchatter.wpn.Subscription;
 /**
  * Copy e.g.
  * BMWbr4dF-V8-fdxch8ZaWrGMgvnF_gJ4sQAGJ4ByUKs7hDQmaixBuJkKvoXi6RYYL2DtOtU7Ktig2-IfowSsb4A,Wyg-77tbRl79qfDHL6EWGQ
+ * Click on link to subscribe https://vapidchatter.commandus.com/code/?token=%2Fcc0AH-Yx6VQ%3AAPA91bGRuyubnlxaeWEqh1qIt4JEBUu4HoAie7HOs-iqKZ6rPiS9G7NfL9o4wFWs58epwOc6QMExYVOKWymTLn1xWqiuk2zMJQtyZY5HKwztAes393AbY40AqLUH4rC5K0Vk4Af1k8qW&authSecret=Wyg-77tbRl79qfDHL6EWGQ
  */
 public class EnterVapidKeyActivity extends AppCompatActivity {
 
