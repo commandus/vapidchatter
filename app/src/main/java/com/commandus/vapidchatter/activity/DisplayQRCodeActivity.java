@@ -19,6 +19,11 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+/**
+ * @brief Display QR code of the
+ * - public key & auth to subscribe or
+ * - subscription token & auth
+ */
 public class DisplayQRCodeActivity extends AppCompatActivity {
 
     private static final String TAG = DisplayQRCodeActivity.class.getSimpleName();
@@ -75,6 +80,21 @@ public class DisplayQRCodeActivity extends AppCompatActivity {
         showQRCode();
     }
 
+    /**
+     * @brief back key pressed event
+     * @return true
+     */
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
+
+    /**
+     * @brief Show QR code bitmap in the image view. QR code corresponds to this device to subscribe
+     * or subscription token.
+     * @see #getCode()
+     */
     private void showQRCode() {
         if (mImageViewQRCode != null) {
             DisplayMetrics metrics = getResources().getDisplayMetrics();
@@ -96,6 +116,17 @@ public class DisplayQRCodeActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * @brief Serialized string encoded in the QR code used for make subscription or
+     * subscription token.
+     * Return serialized public key and auth for subscription.
+     * To subscribe only public key is enough, auth secret anyway is
+     * required later to send messages. Therefore QR code consists of the public key
+     * and auth secret (for later usage).
+     * Subscription token also has auth.
+     * @return public key and auth secret of this device
+     * or of the subscription
+     */
     private String getCode() {
         String value;
         if (!vapidPublicKey.isEmpty()) {
@@ -111,12 +142,11 @@ public class DisplayQRCodeActivity extends AppCompatActivity {
         return value;
     }
 
-    @Override
-    public boolean onSupportNavigateUp() {
-        onBackPressed();
-        return true;
-    }
-
+    /**
+     * @brief Share URL to subscribe or subscription token using other applications.
+     * URL looks like https://vapidchatter.commandus.com/code/?publicKey=&authSecret=
+     * @see Settings#getShareLink(String, String) 
+     */
     private void shareCode() {
         String value = getCode();
         if (!value.isEmpty()) {

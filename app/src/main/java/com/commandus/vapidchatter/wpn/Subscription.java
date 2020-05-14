@@ -105,6 +105,10 @@ public class Subscription {
         }
     }
 
+    /**
+     * @brief Endpoint contains public key (VAPID subscription token) of th subscription.
+     * @return VAPID subscription token
+     */
     public String getToken() {
         int p = endpoint.lastIndexOf('/');
         if (p > 0)
