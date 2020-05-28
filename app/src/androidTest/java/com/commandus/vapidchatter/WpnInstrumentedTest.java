@@ -3,6 +3,7 @@ package com.commandus.vapidchatter;
 import android.content.Context;
 import android.util.Log;
 
+import com.commandus.utilipv6.Address;
 import com.commandus.vapidchatter.wpn.VapidClient;
 import com.commandus.vapidchatter.wpn.wpnAndroid;
 
@@ -18,8 +19,6 @@ import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.util.Collections;
 import java.util.List;
-
-import static org.junit.Assert.*;
 
 /**
  * Instrumented test, which will execute on an Android device.
@@ -93,7 +92,16 @@ public class WpnInstrumentedTest {
         Log.i(TAG, "=================================");
     }
 
+
     @Test
+    public void checkIP6GlobalAddress() {
+        Log.i(TAG, "=================================");
+        String g = Address.getIPv6GlobalAddress();
+        Log.i(TAG, g);
+        Log.i(TAG, "=================================");
+    }
+
+        @Test
     public void checkIPAddress() {
         Log.i(TAG, "=================================");
         try {
@@ -116,6 +124,9 @@ public class WpnInstrumentedTest {
                             Inet6Address a = (Inet6Address) addr;
                             if (a.isSiteLocalAddress() || a.isLinkLocalAddress()) {
                                 Log.i(TAG, "Local IP v6 " + h);
+                                int delim = h.indexOf('%'); // drop ip6 zone suffix
+                                String hh = delim < 0 ? h : h.substring(0, delim);
+                                Log.i(TAG, "Local IP v6 " + hh);
                             } else {
                                 Log.i(TAG, "Global IP v6 " + h);
                                 int delim = h.indexOf('%'); // drop ip6 zone suffix

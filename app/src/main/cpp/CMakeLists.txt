@@ -67,6 +67,8 @@ set(PROTO_LITE_SRC
         ${PROTOBUF_ROOT}/google/protobuf/io/strtod.cc
         ${PROTOBUF_ROOT}/google/protobuf/io/zero_copy_stream.cc
         ${PROTOBUF_ROOT}/google/protobuf/io/zero_copy_stream_impl_lite.cc
+# gprc ver. 1.27
+        ${PROTOBUF_ROOT}/google/protobuf/generated_enum_util.cc
         )
 
 #  ${PROTOBUF_ROOT}/google/protobuf/io/coded_stream_inl.h
