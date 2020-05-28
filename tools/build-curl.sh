@@ -1,7 +1,9 @@
 #!/bin/bash
 # wget https://curl.haxx.se/download/curl-7.69.1.tar.gz
 # tar xvfz curl-7.69.1.tar.gz
+#
 # https://github.com/robertying/openssl-curl-android/releases
+# mkdir -p app/src/main/jniLibs/x86/ app/src/main/jniLibs/x86_64/ app/src/main/jniLibs/armeabi-v7a/ app/src/main/jniLibs/arm64-v8a/
 #
 echo Download from https://github.com/robertying/openssl-curl-android/releases
 exit 0
