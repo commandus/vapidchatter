@@ -77,7 +77,7 @@ public class WpnInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
         VapidClient c = new VapidClient(appContext);
-        Log.i(TAG, c.config.toString());
+        Log.i(TAG, c.getConfig().toString());
         Log.i(TAG, "=================================");
     }
 
@@ -89,7 +89,7 @@ public class WpnInstrumentedTest {
         String filename = appContext.getFilesDir() + "/wpn.js";
         Log.i(TAG, "config file: " + filename);
         VapidClient c = new VapidClient(filename);
-        Log.i(TAG, c.config.toString());
+        Log.i(TAG, c.getConfig().toString());
         Log.i(TAG, "=================================");
     }
 
