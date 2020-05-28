@@ -1,3 +1,4 @@
+PROJECT(wpnlib)
 cmake_minimum_required(VERSION 3.4.1)
 
 set (OPENSSL_INC /home/andrei/lib/openssl-1.1.1f/include)

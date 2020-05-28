@@ -12,6 +12,13 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.net.Inet4Address;
+import java.net.Inet6Address;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.util.Collections;
+import java.util.List;
+
 import static org.junit.Assert.*;
 
 /**
@@ -83,6 +90,45 @@ public class WpnInstrumentedTest {
         Log.i(TAG, "config file: " + filename);
         VapidClient c = new VapidClient(filename);
         Log.i(TAG, c.config.toString());
+        Log.i(TAG, "=================================");
+    }
+
+    @Test
+    public void checkIPAddress() {
+        Log.i(TAG, "=================================");
+        try {
+            List<NetworkInterface> interfaces = Collections.list(NetworkInterface.getNetworkInterfaces());
+            for (NetworkInterface intf : interfaces) {
+                if (intf.isLoopback()) {
+                    continue;
+                }
+                Log.i(TAG, "Interface " + intf.getDisplayName() + " " + intf.getName()
+                        + " " + intf.toString());
+                List<InetAddress> addrs = Collections.list(intf.getInetAddresses());
+                for (InetAddress addr : addrs) {
+                    Log.i(TAG, "IP " + addr.toString());
+                    if (!addr.isLoopbackAddress()) {
+                        String h = addr.getHostAddress();
+                        if (addr instanceof Inet4Address) {
+                            Log.i(TAG, "IP v4 " + h);
+                        }
+                        if (addr instanceof Inet6Address) {
+                            Inet6Address a = (Inet6Address) addr;
+                            if (a.isSiteLocalAddress() || a.isLinkLocalAddress()) {
+                                Log.i(TAG, "Local IP v6 " + h);
+                            } else {
+                                Log.i(TAG, "Global IP v6 " + h);
+                                int delim = h.indexOf('%'); // drop ip6 zone suffix
+                                String hh = delim < 0 ? h : h.substring(0, delim);
+                                Log.i(TAG, "Global IP v6 " + hh);
+                            }
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
+            Log.e(TAG, e.toString());
+        }
         Log.i(TAG, "=================================");
     }
 
