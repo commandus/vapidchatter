@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.commandus.vapidchatter.R;
+import com.commandus.vapidchatter.service.VapidChatterService;
 import com.commandus.vapidchatter.wpn.*;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
@@ -36,6 +37,12 @@ public class MainActivity extends AppCompatActivity {
         // Example of a call to a native method
         TextView tv = findViewById(R.id.sample_text);
         tv.setText(wpnAndroid.version());
+
+        init();
+    }
+
+    private void init() {
+        startService(new Intent(this, VapidChatterService.class));
     }
 
     @Override
