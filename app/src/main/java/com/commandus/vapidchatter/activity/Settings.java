@@ -5,9 +5,11 @@ import android.content.ClipData;
 import android.content.ClipDescription;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.commandus.vapidchatter.wpn.Subscription;
+import com.commandus.vapidchatter.wpn.SubscriptionPropertiesList;
 import com.commandus.vapidchatter.wpn.VapidClient;
 import com.commandus.vapidchatter.wpn.wpnAndroid;
 import com.google.zxing.integration.android.IntentIntegrator;
@@ -27,12 +29,30 @@ public class Settings {
     private static final String LINK_PREFIX = "https://vapidchatter.commandus.com/code/?";
 
     private static VapidClient mVapidClient = null;
+    private SubscriptionPropertiesList subscriptionPropertiesList;
+    private static Settings mInstance = null;
+    private final Context context;
+
+    static final String PREFS_NAME = "vapidchatter";
+    private static final String PREF_IPV6_LIST = "ipv6";
+
+    public Settings(Context context) {
+        this.context = context;
+        load(context);
+    }
 
     public synchronized static VapidClient getVapidClient(Context context) {
         if (mVapidClient == null) {
             mVapidClient = new VapidClient(context);
         }
         return mVapidClient;
+    }
+
+    public synchronized static Settings getInstance(Context context) {
+        if (mInstance == null) {
+            mInstance = new Settings(context);
+        }
+        return mInstance;
     }
 
     public static boolean checkVapidPublicKey(String vapidPublicKey) {
@@ -117,5 +137,21 @@ public class Settings {
         int err = wpnAndroid.saveSubscription(env, subscriptionToken, authSecret);
         return err == 0;
     }
+
+    void save(Context context) {
+        SharedPreferences settings = context.getSharedPreferences(PREFS_NAME, 0);
+        SharedPreferences.Editor editor = settings.edit();
+        if (subscriptionPropertiesList != null) {
+            editor.putString(PREF_IPV6_LIST, subscriptionPropertiesList.toString());
+        }
+        editor.apply();
+    }
+
+    private void load(Context context) {
+        SharedPreferences settings = context.getSharedPreferences(PREFS_NAME, 0);
+        String js = settings.getString(PREF_IPV6_LIST, "");
+        subscriptionPropertiesList = new SubscriptionPropertiesList(js);
+    }
+
 
 }
