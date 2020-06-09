@@ -7,8 +7,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 
 public class SubscriptionPropertiesList {
     private static final String TAG = SubscriptionPropertiesList.class.getSimpleName();
@@ -44,5 +42,13 @@ public class SubscriptionPropertiesList {
             prefix = ", ";
         }
         return sb.toString();
+    }
+
+    public void clear() {
+        values.clear();
+    }
+
+    public void put(String key, String ipv6Address) {
+        values.put(key, new SubscriptionProperties(key, ipv6Address));
     }
 }

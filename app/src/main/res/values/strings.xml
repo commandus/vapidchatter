@@ -1,29 +1,35 @@
 <resources>
-    <string name="app_name">vapidchatter</string>
-    <string name="hint_vapid_key">VAPID public key</string>
-    <string name="label_vapid_key">Enter key</string>
-    <string name="action_enter_vapid_key">Enter key</string>
+    <string name="notification_channel_id" translatable="false">com.commandus.vapidchatter</string>
+    <string name="app_name">Vapid chatter</string>
+
     <string name="description_enter_vapid_key">Enter VAPID key</string>
-    <string name="msg_err_subscribe_to_vapid_key">Can not subscribe to VAPID key</string>
-    <string name="prompt_scan_vapid_key">Scam QR code</string>
-    <string name="msg_scan_code_cancelled">Scan cancelled</string>
-    <string name="prompt_scan_code_processing">QR code processing..</string>
-    <string name="notification_channel_id">com.commandus.vapidchatter</string>
     <string name="description_display_vapid_key">Display QR code 1</string>
+    <string name="description_accept">Accept</string>
+
+    <string name="action_enter_vapid_key">Enter key</string>
     <string name="action_display_vapid_key">Display QR code 1</string>
     <string name="action_display_subscription">Display QR code 2</string>
     <string name="action_scan_vapid_key">Scan QR code</string>
+
+    <string name="toast_scan_vapid_key">Scan QR code</string>
+    <string name="toast_scan_code_processing">QR code processing..</string>
+
+    <string name="hint_vapid_key">VAPID public key</string>
     <string name="hint_auth_secret">auth secret</string>
+
+    <string name="label_vapid_key">Enter key</string>
     <string name="label_auth_secret">auth secret</string>
-    <string name="msg_scan_code_wrong">Invalid QR code</string>
-    <string name="msg_link_wrong">Invalid code</string>
     <string name="label_accept_shared_code_1">Do you want add</string>
     <string name="label_accept_shared_code_vapid_key">to receive messages from</string>
-    <string name="description_accept">Accept</string>
-    <string name="label_display_code_or_share">DIsplay QR code or share</string>
-    <string name="share_code">Share code</string>
+    <string name="label_display_code_or_share">Display QR code or share</string>
+
+    <string name="intent_msg_choose_share">Choose app to share code</string>
+
+    <string name="msg_err_subscribe_to_vapid_key">Can not subscribe to VAPID key</string>
+    <string name="msg_scan_code_cancelled">Scan cancelled</string>
+    <string name="msg_scan_code_wrong">Invalid QR code</string>
+    <string name="msg_link_wrong">Invalid code</string>
     <string name="msg_share_code">Click on link to subscribe</string>
-    <string name="choose_share">Choose app to share code</string>
     <string name="msg_saved_subscription_successfully">Subscription created successfully</string>
     <string name="msg_err_save_subscription">Error save subscription</string>
 </resources>

@@ -153,7 +153,7 @@ public class DisplayQRCodeActivity extends AppCompatActivity {
             try {
                 Intent shareIntent = new Intent(Intent.ACTION_SEND);
                 shareIntent.setType("text/plain");
-                shareIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.share_code));
+                shareIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.msg_share_code));
                 String shareMessage = getString(R.string.msg_share_code) + " ";
                 if (!vapidPublicKey.isEmpty()) {
                     shareMessage += Settings.getShareLink(vapidPublicKey, authSecret);
@@ -163,7 +163,7 @@ public class DisplayQRCodeActivity extends AppCompatActivity {
                 }
 
                 shareIntent.putExtra(Intent.EXTRA_TEXT, shareMessage);
-                startActivity(Intent.createChooser(shareIntent, getString(R.string.choose_share)));
+                startActivity(Intent.createChooser(shareIntent, getString(R.string.intent_msg_choose_share)));
             } catch(Exception e) {
                 Log.e(TAG, e.toString());
             }

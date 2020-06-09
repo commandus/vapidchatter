@@ -124,7 +124,7 @@ public class EnterVapidKeyActivity extends AppCompatActivity {
             return;
         }
 
-        Toast.makeText(this, getString(R.string.prompt_scan_code_processing), Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, getString(R.string.toast_scan_code_processing), Toast.LENGTH_SHORT).show();
         Subscription s = Settings.subscribe2VapidKey(EnterVapidKeyActivity.this,
                 vapidPublicKey, authSecret);
         if (s == null) {

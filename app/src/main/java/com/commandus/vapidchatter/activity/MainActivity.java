@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 break;
             case R.id.action_scan_vapid_key:
-                Settings.startScanCode(this, getString(R.string.prompt_scan_vapid_key));
+                Settings.startScanCode(this, getString(R.string.toast_scan_vapid_key));
                 break;
 
         }
@@ -108,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
                     if (result.getContents() == null) {
                         Toast.makeText(this, getString(R.string.msg_scan_code_cancelled), Toast.LENGTH_LONG).show();
                     } else {
-                        Toast.makeText(this, getString(R.string.prompt_scan_code_processing), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, getString(R.string.toast_scan_code_processing), Toast.LENGTH_SHORT).show();
                         String scanned = result.getContents();
                         String[] sa = scanned.split(",");
                         if (sa.length == 2) {
