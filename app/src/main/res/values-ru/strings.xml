@@ -22,7 +22,7 @@
     <string name="label_accept_shared_code_vapid_key">чтобы получать сообщения от</string>
     <string name="label_display_code_or_share">Показать QR код или поделиться</string>
 
-    <string name="intent_msg_choose_share">Выбеите приложение, через которое поделиться кодом</string>
+    <string name="intent_msg_choose_share">Выберите приложение, через которое поделиться кодом</string>
 
     <string name="msg_err_subscribe_to_vapid_key">Не удалось подприсаться на VAPID ключ</string>
     <string name="msg_scan_code_cancelled">Сканирование прервано</string>

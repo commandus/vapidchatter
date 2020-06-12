@@ -35,6 +35,14 @@ public class Subscription {
         reset();
     }
 
+    public Subscription(String id, String name, String endpoint, String publicKey, String authSecret) {
+        this.id = id;
+        this.name = name;
+        this.endpoint = endpoint;
+        this.publicKey = publicKey;
+        this.authSecret = authSecret;
+    }
+
     private void reset() {
         id = "0";
         name = "";

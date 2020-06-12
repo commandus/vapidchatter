@@ -2,6 +2,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
+        android:id="@+id/action_list_subscriptions"
+        android:orderInCategory="100"
+        android:title="@string/action_display_vapid_key"
+        android:icon="@android:drawable/ic_menu_agenda"
+        app:showAsAction="ifRoom" />
+    <item
         android:id="@+id/action_display_vapid_key"
         android:orderInCategory="100"
         android:title="@string/action_display_vapid_key"

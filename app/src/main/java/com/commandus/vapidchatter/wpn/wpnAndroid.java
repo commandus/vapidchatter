@@ -14,6 +14,12 @@ public class wpnAndroid {
 
     public static native String openEnv(String filename);
     public static native void closeEnv(String descriptor);
+
+    /**
+     * Save subscriptions
+     * @param descriptor environment descriptor
+     * @return true
+     */
     public static native void saveEnv(String descriptor);
     public static native String env2json(String descriptor);
     public static native int envErrorCode(String descriptor);
@@ -34,14 +40,5 @@ public class wpnAndroid {
     }
 
     private static native String subscribe2VapidPublicKeyJson(String env, String key, String authSecret);
-
-    /**
-     *
-     * @param env   client ref
-     * @param subscriptionToken subscriuption token
-     * @param authSecret used as identifier to find out incomplete subscription
-     * @return true
-     */
-    public static native int saveSubscription(String env, String subscriptionToken, String authSecret);
 
 }

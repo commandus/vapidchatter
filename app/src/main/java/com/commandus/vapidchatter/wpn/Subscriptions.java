@@ -8,7 +8,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-class Subscriptions {
+public class Subscriptions {
     private static final String TAG = Subscriptions.class.getSimpleName();
     public ArrayList<Subscription> subscriptions;
     public Subscriptions(JSONArray values) {
@@ -47,5 +47,9 @@ class Subscriptions {
                 Log.e(TAG, e.toString());
             }
         }
+    }
+
+    public Subscription[] toArray() {
+        return (Subscription[]) subscriptions.toArray();
     }
 }

@@ -38,7 +38,7 @@ public class Settings {
 
     public Settings(Context context) {
         this.context = context;
-        load(context);
+        load();
     }
 
     public synchronized static VapidClient getVapidClient(Context context) {
@@ -76,6 +76,11 @@ public class Settings {
         return wpnAndroid.checkVapidToken(subscriptionToken);
     }
 
+    /**
+     * Get text from the clipboard
+     * @param context application context
+     * @return clipboard text
+     */
     public static String getClipboardText(Context context) {
         ClipboardManager clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
         String pasteData = "";
@@ -96,8 +101,7 @@ public class Settings {
         return pasteData;
     }
 
-    public static Subscription subscribe2VapidKey(
-            Context context, String vapidPublicKey, String authSecret) {
+    public static Subscription subscribe2VapidKey(Context context, String vapidPublicKey, String authSecret) {
         String env = Settings.getVapidClient(context).getEnvDescriptor();
         return wpnAndroid.subscribe2VapidPublicKey(env, vapidPublicKey, authSecret);
     }
@@ -113,32 +117,37 @@ public class Settings {
     public static String getShareLink(String publicKey, String auth) {
         try {
             return LINK_PREFIX
-                    + Settings.VAPID_PUBLIC_KEY + "=" + URLEncoder.encode(publicKey, "utf-8") + "&"
-                    + Settings.VAPID_AUTH_SECRET + "=" + URLEncoder.encode(auth, "utf-8");
+                + Settings.VAPID_PUBLIC_KEY + "=" + URLEncoder.encode(publicKey, "utf-8") + "&"
+                + Settings.VAPID_AUTH_SECRET + "=" + URLEncoder.encode(auth, "utf-8");
         } catch (UnsupportedEncodingException e) {
             Log.e(TAG, e.toString());
             return LINK_PREFIX;
         }
     }
 
+    /**
+     * Return share link from the VAPID token
+     * @param token subscription token
+     * @param authSecret auth secret
+     * @return share link from the VAPID token
+     */
     public static String getShareLinkSubscription(String token, String authSecret) {
         try {
             return LINK_PREFIX
-                    + Settings.VAPID_TOKEN + "=" + URLEncoder.encode(token, "utf-8") + "&"
-                    + Settings.VAPID_AUTH_SECRET + "=" + URLEncoder.encode(authSecret, "utf-8");
+                + Settings.VAPID_TOKEN + "=" + URLEncoder.encode(token, "utf-8") + "&"
+                + Settings.VAPID_AUTH_SECRET + "=" + URLEncoder.encode(authSecret, "utf-8");
         } catch (UnsupportedEncodingException e) {
             Log.e(TAG, e.toString());
             return LINK_PREFIX;
         }
     }
 
-    public static boolean saveSubscription(Context context, String subscriptionToken, String authSecret) {
+    public void save() {
+        // save client's subscriptions
         String env = Settings.getVapidClient(context).getEnvDescriptor();
-        int err = wpnAndroid.saveSubscription(env, subscriptionToken, authSecret);
-        return err == 0;
-    }
+        wpnAndroid.saveEnv(env);
 
-    void save(Context context) {
+        // save IPv6 address list
         SharedPreferences settings = context.getSharedPreferences(PREFS_NAME, 0);
         SharedPreferences.Editor editor = settings.edit();
         if (subscriptionPropertiesList != null) {
@@ -147,7 +156,7 @@ public class Settings {
         editor.apply();
     }
 
-    private void load(Context context) {
+    private void load() {
         SharedPreferences settings = context.getSharedPreferences(PREFS_NAME, 0);
         String js = settings.getString(PREF_IPV6_LIST, "");
         subscriptionPropertiesList = new SubscriptionPropertiesList(js);
