@@ -22,6 +22,7 @@ public class wpnAndroid {
      */
     public static native void saveEnv(String descriptor);
     public static native String env2json(String descriptor);
+    public static native void setConfigJson(String descriptor, String json);
     public static native int envErrorCode(String descriptor);
     public static native String envErrorDescription(String descriptor);
 

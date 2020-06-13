@@ -43,6 +43,14 @@ public class Subscription {
         this.authSecret = authSecret;
     }
 
+    public Subscription(String subscriptionToken, String authSecret) {
+        this.id = "";
+        this.name = "";
+        this.publicKey = subscriptionToken; //?!!
+        this.endpoint = "";
+        this.authSecret = authSecret;
+    }
+
     private void reset() {
         id = "0";
         name = "";

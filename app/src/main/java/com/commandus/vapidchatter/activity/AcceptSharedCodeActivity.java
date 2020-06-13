@@ -9,7 +9,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.commandus.vapidchatter.R;
+import com.commandus.vapidchatter.wpn.Config;
 import com.commandus.vapidchatter.wpn.Subscription;
+import com.commandus.vapidchatter.wpn.VapidClient;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -60,7 +62,7 @@ public class AcceptSharedCodeActivity extends AppCompatActivity {
                     mButtonAccept.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            saveSubscription();
+                            saveSubscriptions();
                         }
                     });
                 }
@@ -86,8 +88,13 @@ public class AcceptSharedCodeActivity extends AppCompatActivity {
         }
     }
 
-    private void saveSubscription() {
-        if (Settings.saveSubscription(this, subscriptionToken, authSecret)) {
+    private void saveSubscriptions() {
+        VapidClient c = Settings.getVapidClient(this);
+        Config config = c.getConfig();
+        Subscription s = new Subscription(subscriptionToken, authSecret);
+        config.subscriptions.subscriptions.add(s);
+
+        if (c.save(config)) {
             Toast.makeText(this, R.string.msg_saved_subscription_successfully, Toast.LENGTH_LONG).show();
         } else {
             Toast.makeText(this, R.string.msg_err_save_subscription, Toast.LENGTH_LONG).show();

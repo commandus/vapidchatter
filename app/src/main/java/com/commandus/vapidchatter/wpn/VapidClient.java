@@ -5,8 +5,11 @@ import android.util.Log;
 
 public class VapidClient {
     private static final String TAG = VapidClient.class.getSimpleName();
+    // config file name
     private String filename;
+    // client descriptor
     private String envDescriptor;
+    // not used. Registry descriptor
     private String regDescriptor;
 
     public VapidClient(Context context) {
@@ -20,41 +23,41 @@ public class VapidClient {
     }
 
     public int connect() {
-        Log.i(TAG, "connect, config file: " + filename);
+        Log.d(TAG, "connect, config file: " + filename);
         envDescriptor = wpnAndroid.openEnv(filename);
-        Log.i(TAG, "env descriptor: " + envDescriptor
+        Log.d(TAG, "env descriptor: " + envDescriptor
                 + ", code: " + wpnAndroid.envErrorCode(envDescriptor)
                 + ", description: " + wpnAndroid.envErrorDescription(envDescriptor));
 
         regDescriptor = wpnAndroid.openRegistryClientEnv(envDescriptor);
-        Log.i(TAG, "registration client descriptor: " + regDescriptor);
+        Log.d(TAG, "registration client descriptor: " + regDescriptor);
 
         boolean isRegistered = wpnAndroid.validateRegistration(regDescriptor);
         if (isRegistered) {
-            Log.i(TAG, "Registration success");
+            Log.d(TAG, "Registration success");
         } else {
             Log.e(TAG, "Error registration code: " + wpnAndroid.regErrorCode(regDescriptor)
                 + ", description: " + wpnAndroid.regErrorDescription(regDescriptor));
         }
-        save();
-        Log.i(TAG, "connected, save config file: " + filename);
+        Log.d(TAG, "connected, config file: " + filename);
         return 0;
     }
 
-    public void save() {
+    public boolean save(Config config) {
+        setConfig(config);
         String js = wpnAndroid.env2json(envDescriptor);
-        Log.i(TAG, "config: " + js);
-
+        Log.d(TAG, "Save config: " + js);
         wpnAndroid.saveEnv(envDescriptor);
+        return true;
     }
 
     public void disconnect() {
-        Log.i(TAG, "disconnect");
+        Log.d(TAG, "disconnect");
         wpnAndroid.closeRegistryClientEnv(regDescriptor);
         wpnAndroid.saveEnv(envDescriptor);
         wpnAndroid.closeEnv(envDescriptor);
-        save();
-        Log.i(TAG, "disconnected, save config file: " + filename);
+        save(getConfig());
+        Log.d(TAG, "disconnected, save config file: " + filename);
     }
 
     public Config getConfig() {
@@ -68,11 +71,16 @@ public class VapidClient {
         return new Config(js);
     }
 
+    public void setConfig(Config config) {
+        String js = config.toString();
+        wpnAndroid.setConfigJson(envDescriptor, js);
+    }
+
     public String getEnvDescriptor() {
         return envDescriptor;
     }
 
-    public String getEegDescriptor() {
+    public String getRegDescriptor() {
         return regDescriptor;
     }
 
