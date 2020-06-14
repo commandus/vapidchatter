@@ -31,7 +31,7 @@ public class Subscriptions {
         if (subscriptions.size() > 0) {
             b.append(subscriptions.get(0).toString());
             for (int i = 1; i < subscriptions.size(); i++) {
-                b.append(", ").append(subscriptions.get(0).toString());
+                b.append(", ").append(subscriptions.get(i).toString());
             }
         }
         return b.toString();

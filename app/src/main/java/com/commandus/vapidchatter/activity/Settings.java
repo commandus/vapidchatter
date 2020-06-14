@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
+import com.commandus.vapidchatter.wpn.Config;
 import com.commandus.vapidchatter.wpn.Subscription;
 import com.commandus.vapidchatter.wpn.SubscriptionPropertiesList;
 import com.commandus.vapidchatter.wpn.VapidClient;
@@ -142,10 +143,13 @@ public class Settings {
         }
     }
 
-    public void save() {
+    public void save(Config config) {
         // save client's subscriptions
-        String env = Settings.getVapidClient(context).getEnvDescriptor();
-        wpnAndroid.saveEnv(env);
+        VapidClient client = Settings.getVapidClient(context);
+        String env = client.getEnvDescriptor();
+        String js = config.toString();
+        wpnAndroid.setConfigJson(env, js);
+        // wpnAndroid.saveEnv(env);
 
         // save IPv6 address list
         SharedPreferences settings = context.getSharedPreferences(PREFS_NAME, 0);

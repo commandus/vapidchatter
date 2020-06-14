@@ -6,6 +6,7 @@ import android.util.Log;
 import com.commandus.utilipv6.Address;
 import com.commandus.vapidchatter.activity.Settings;
 import com.commandus.vapidchatter.activity.SubscriptionsAdapter;
+import com.commandus.vapidchatter.wpn.Config;
 import com.commandus.vapidchatter.wpn.Subscription;
 import com.commandus.vapidchatter.wpn.Subscriptions;
 import com.commandus.vapidchatter.wpn.VapidClient;
@@ -152,21 +153,22 @@ public class WpnInstrumentedTest {
         Log.i(TAG, "=================================");
         Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
         VapidClient client = Settings.getVapidClient(context);
-        Subscriptions subscriptions = client.getConfig().subscriptions;
-        Log.i(TAG, "Subscriptions: " + subscriptions.toString());
+        Config config = client.getConfig();
+        Log.i(TAG, "Subscriptions (0): " + config.subscriptions.toString());
         for (int i = 0; i < 10; i++) {
             String id = String.valueOf(i);
             String name = "Subscription " + id;
             String endpoint = "";
             String publicKey = "";
             String authSecret = "";
-            Subscription s = new Subscription(
+            Subscription subscription = new Subscription(
                 id, name, endpoint, publicKey, authSecret
             );
-            subscriptions.subscriptions.add(s);
+            config.subscriptions.subscriptions.add(subscription);
         }
-        Log.i(TAG, "Subscriptions: " + subscriptions.toString());
-        Settings.getInstance(context).save();
+        Log.i(TAG, "Subscriptions(1): " + config.subscriptions.toString());
+        config.subscriptions.subscriptions.clear();
+        Settings.getInstance(context).save(config);
         Log.i(TAG, "=================================");
     }
 

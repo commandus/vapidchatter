@@ -121,15 +121,16 @@ Java_com_commandus_vapidchatter_wpn_wpnAndroid_envErrorCode
 
 extern "C" JNIEXPORT jint JNICALL
 Java_com_commandus_vapidchatter_wpn_wpnAndroid_setConfigJson
-        (
-                JNIEnv* env,
-                jobject __unused thisObject,
-                jstring descriptor,
-                jstring json
-        )
+(
+        JNIEnv* env,
+        jobject __unused thisObject,
+        jstring descriptor,
+        jstring json
+)
 {
     std::string v(env->GetStringUTFChars(json, NULL));
     setConfigJson(descriptorJ2C(env->GetStringUTFChars(descriptor, NULL)), v);
+    return 0;
 }
 
 extern "C" JNIEXPORT jstring JNICALL
