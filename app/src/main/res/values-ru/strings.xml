@@ -31,4 +31,5 @@
     <string name="msg_share_code">Нажмите для подписки</string>
     <string name="msg_saved_subscription_successfully">Подписка создана</string>
     <string name="msg_err_save_subscription">Сбой сохранения подписки</string>
+    <string name="action_help">Справка</string>
 </resources>

@@ -7,7 +7,6 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
@@ -19,11 +18,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".activity.HelpActivity"></activity>
+
         <service
             android:name=".service.VapidChatterService"
             android:enabled="true"
-            android:exported="true"></service>
-        <!-- http://code.google.com/android/backup/signup.html -->
+            android:exported="true" /> <!-- http://code.google.com/android/backup/signup.html -->
         <meta-data
             android:name="com.google.android.backup.api_key"
             android:value="AEdPqrEAAAAIIE3gA5Y5N42v6sSYIADWnw-O1ABHTr3xDdEwwA" />
@@ -43,15 +43,12 @@
             android:resource="@color/colorAccent" />
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"
-            android:value="@string/notification_channel_id" />
-
-        <!-- start up service on boot -->
+            android:value="@string/notification_channel_id" /> <!-- start up service on boot -->
         <receiver android:name=".service.ReceiverBoot">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
-
         <receiver
             android:name=".service.NetworkChangeReceiver"
             android:label="NetworkChangeReceiver">
@@ -64,6 +61,7 @@
         <activity android:name=".activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

@@ -32,4 +32,5 @@
     <string name="msg_share_code">Click on link to subscribe</string>
     <string name="msg_saved_subscription_successfully">Subscription created successfully</string>
     <string name="msg_err_save_subscription">Error save subscription</string>
+    <string name="action_help">Help</string>
 </resources>

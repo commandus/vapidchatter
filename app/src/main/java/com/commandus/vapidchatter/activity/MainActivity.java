@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = MainActivity.class.getSimpleName();
     private static final int RET_ENTER_KEY = 1;
     private static final int RET_DISPLAY_KEY = 2;
+    private static final int RET_PICK_SUBSCRIPTION = 3;
 
     private VapidClient mClient;
     private Subscription mSubscription;
@@ -55,16 +56,24 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.action_help:
+                Intent intent0 = new Intent(this, HelpActivity.class);
+                startActivity(intent0);
+                break;
+            case R.id.action_list_subscriptions:
+                Intent intent1 = new Intent(this, SubscriptionsActivity.class);
+                startActivityForResult(intent1, RET_PICK_SUBSCRIPTION);
+                break;
             case R.id.action_enter_vapid_key:
-                Intent intent = new Intent(this, EnterVapidKeyActivity.class);
-                startActivityForResult(intent, RET_ENTER_KEY);
+                Intent intent2 = new Intent(this, EnterVapidKeyActivity.class);
+                startActivityForResult(intent2, RET_ENTER_KEY);
                 break;
             case R.id.action_display_vapid_key:
                 if (mClient != null) {
-                    Intent intent2 = new Intent(this, DisplayQRCodeActivity.class);
-                    intent2.putExtra(Settings.VAPID_PUBLIC_KEY, mClient.getConfig().keys.publicKey);
-                    intent2.putExtra(Settings.VAPID_AUTH_SECRET, mClient.getConfig().keys.authSecret);
-                    startActivityForResult(intent2, RET_DISPLAY_KEY);
+                    Intent intent3 = new Intent(this, DisplayQRCodeActivity.class);
+                    intent3.putExtra(Settings.VAPID_PUBLIC_KEY, mClient.getConfig().keys.publicKey);
+                    intent3.putExtra(Settings.VAPID_AUTH_SECRET, mClient.getConfig().keys.authSecret);
+                    startActivityForResult(intent3, RET_DISPLAY_KEY);
                 }
                 break;
             case R.id.action_display_subscription:
@@ -90,6 +99,18 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
+            case RET_PICK_SUBSCRIPTION:
+                if (resultCode == RESULT_OK) {
+                    if (data != null) {
+                        String s = data.getStringExtra(Settings.SUBSCRIPTION);
+                        if (s != null) {
+                            mSubscription = new Subscription(s);
+                            Log.d(TAG, mSubscription.toString());
+                            // displaySubscriptionQRCode();
+                        }
+                    }
+                }
+                break;
             case RET_ENTER_KEY:
                 if (resultCode == RESULT_OK) {
                     if (data != null) {
