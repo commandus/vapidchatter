@@ -1,13 +1,23 @@
+/**
+ * Important notes
+ *
+ * Terms
+ *
+ * WPN subscription is an set of public keys, etc to establish "WPN connection".
+ * WPN environment is a set of WPN client configuration, settings and subscriptions.
+ * WPN environment serialized as JSON string and stored in "wpn.json" file.
+ */
 #include <jni.h>
 #include <string>
 #include <sstream>
 #include "vapid-api.h"
+#include "mcs/mcsclient.h"
 
 /**
  * Helper function.
- * Java WPN client descriptor is a hex string
- * @param value Java WPN client descriptor
- * @return pointer to the WPN client
+ * Java WPN environment descriptor is a hex string
+ * @param value Java WPN environment  descriptor
+ * @return pointer to the WPN environment 
  */
 static inline void* descriptorJ2C(const std::string &value)
 {
@@ -18,9 +28,9 @@ static inline void* descriptorJ2C(const std::string &value)
 
 /**
  * Helper function.
- * WPN client descriptor is pointer to the WPN client
- * @param value  pointer to the WPN client
- * @return Java WPN client descriptor
+ * WPN environment descriptor is pointer to the WPN environment 
+ * @param value  pointer to the WPN environment 
+ * @return Java WPN environment  descriptor
  */
 static inline std::string descriptorC2J(void* value)
 {
@@ -30,7 +40,7 @@ static inline std::string descriptorC2J(void* value)
 }
 
 /**
- * Return WPN client version string.
+ * Return WPN environment version string.
  * Usage:
  * import com.commandus.vapidchatter.wpn.*;
  * tv.setText(wpnAndroid.version());
@@ -75,11 +85,11 @@ Java_com_commandus_vapidchatter_wpn_wpnAndroid_checkVapidPublicKey
  */
 extern "C" JNIEXPORT jboolean JNICALL
 Java_com_commandus_vapidchatter_wpn_wpnAndroid_checkVapidPrivateKey
-        (
-                JNIEnv* env,
-                jobject  __unused thisObject,
-                jstring vapidPrivateKey
-        )
+(
+    JNIEnv* env,
+    jobject  __unused thisObject,
+    jstring vapidPrivateKey
+)
 {
     std::string v(env->GetStringUTFChars(vapidPrivateKey, NULL));
     return static_cast<jboolean> (isPrivateKeyValid(v));
@@ -126,11 +136,11 @@ Java_com_commandus_vapidchatter_wpn_wpnAndroid_checkVapidToken
 }
 
 /**
- * Open config file in JSON format, read  and start WPN client.
+ * Open config file in JSON format, read  and start WPN environment .
  * After user modify subscriptions ot made any changes, call
  * wpnAndroid.saveEnv() to store changes in the file.
  * @param fileName file name
- * @return WPN client Java descriptor
+ * @return WPN environment  Java descriptor
  * Usage:
  * import com.commandus.vapidchatter.wpn.*;
  * wpnAndroid.openEnv(fileName);
@@ -149,8 +159,8 @@ Java_com_commandus_vapidchatter_wpn_wpnAndroid_openEnv
 }
 
 /**
- * Stop WPN client
- * @param descriptor WPN client Java descriptor
+ * Stop WPN environment 
+ * @param descriptor WPN environment  Java descriptor
  * Usage:
  * import com.commandus.vapidchatter.wpn.*;
  * wpnAndroid.closeEnv(descriptor);
@@ -167,11 +177,11 @@ Java_com_commandus_vapidchatter_wpn_wpnAndroid_closeEnv
 }
 
 /**
- * Save WPN client config in associated JSON file.
+ * Save WPN environment  config in associated JSON file.
  * You need call wpnAndroid.saceEnv(descriptor) to
  * keep changes in the JSON file so after re-start client
  * can read subscriptions from the file.
- * @param descriptor WPN client Java descriptor
+ * @param descriptor WPN environment  Java descriptor
  * Usage:
  * import com.commandus.vapidchatter.wpn.*;
  * wpnAndroid.saceEnv(descriptor);
@@ -188,9 +198,9 @@ Java_com_commandus_vapidchatter_wpn_wpnAndroid_saveEnv
 }
 
 /**
- * Return last WPN client error code.
+ * Return last WPN environment  error code.
  * 0- no error.
- * @param descriptor WPN client Java descriptor
+ * @param descriptor WPN environment  Java descriptor
  * Usage:
  * import com.commandus.vapidchatter.wpn.*;
  * int code = wpnAndroid.envErrorCode(descriptor);
@@ -207,8 +217,8 @@ Java_com_commandus_vapidchatter_wpn_wpnAndroid_envErrorCode
 }
 
 /**
- * Set WPN client config from the JSON string
- * @param descriptor WPN client Java descriptor
+ * Set WPN environment  config from the JSON string
+ * @param descriptor WPN environment  Java descriptor
  * @param json JSON string
  * @reurn 0
  * @see wpnAndroid.env3json(descriptor)
@@ -231,9 +241,9 @@ Java_com_commandus_vapidchatter_wpn_wpnAndroid_setConfigJson
 }
 
 /**
- * Get last WPN client error description in EN locale.
+ * Get last WPN environment  error description in EN locale.
  * Return empty string if no error occurred.
- * @param descriptor WPN client Java descriptor
+ * @param descriptor WPN environment  Java descriptor
  * Usage:
  * import com.commandus.vapidchatter.wpn.*;
  * String errDesc = wpnAndroid.envErrorDescription(descriptor);
@@ -251,10 +261,10 @@ Java_com_commandus_vapidchatter_wpn_wpnAndroid_envErrorDescription
 }
 
 /**
- * Get WPN client config as JSON string.
- * @param descriptor WPN client Java descriptor
+ * Get WPN environment  config as JSON string.
+ * @param descriptor WPN environment  Java descriptor
  * @see wpnAndroid.setConfigJson(descriptor)
- * @return WPN client config as JSON string
+ * @return WPN environment  config as JSON string
  * Usage:
  * import com.commandus.vapidchatter.wpn.*;
  * String errDesc = wpnAndroid.env3json(descriptor);
@@ -272,9 +282,9 @@ Java_com_commandus_vapidchatter_wpn_wpnAndroid_env2json
 }
 
 /**
- * Open registry WPN client config as JSON string.
- * @param descriptor WPN client Java descriptor
- * @return WPN client descriptor
+ * Open registry WPN environment  config as JSON string.
+ * @param descriptor WPN environment  Java descriptor
+ * @return WPN environment  descriptor
  * Usage:
  * import com.commandus.vapidchatter.wpn.*;
  * String registryDescriptor = wpnAndroid.openRegistryClientEnv(descriptor);
@@ -292,8 +302,8 @@ Java_com_commandus_vapidchatter_wpn_wpnAndroid_openRegistryClientEnv
 }
 
 /**
- * Close registry WPN client config as JSON string.
- * @param descriptor WPN client Java descriptor
+ * Close registry WPN environment  config as JSON string.
+ * @param descriptor WPN environment  Java descriptor
  * Usage:
  * import com.commandus.vapidchatter.wpn.*;
  * wpnAndroid.closeRegistryClientEnv(registryDescriptor);
@@ -370,7 +380,8 @@ Java_com_commandus_vapidchatter_wpn_wpnAndroid_validateRegistration
 }
 
 /**
- * Subscribe to another client using public key and authSecret
+ * Subscribe to another client using public key and authSecret.
+ * Saves WPN environment if subscription success.
  * Return not NULL if subscribes successfully
  * @param descriptor WPN registry Java descriptor
  * @param key public key to subscribe to
@@ -397,4 +408,47 @@ Java_com_commandus_vapidchatter_wpn_wpnAndroid_subscribe2VapidPublicKeyJson
         return NULL;
     }
     return env->NewStringUTF(r.c_str());
+}
+
+static void internalOnNotify(
+    void *env,
+    const char *persistent_id,
+    const char *from,				///< e.g. BDOU99-h67HcA6JeFXHbSNMu7e2yNNu3RzoMj8TM4W88jITfq7ZmPvIM1Iv-4_l2LxQcYwhqby2xGpWwzjfAnG4
+    const char *appName,
+    const char *appId,
+    int64_t sent,
+    const NotifyMessageC *request
+) {
+
+}
+
+/**
+ * Start client
+ * @param descriptor WPN registry Java descriptor
+ */
+extern "C" JNIEXPORT void * JNICALL
+Java_com_commandus_vapidchatter_wpn_wpnAndroid_startClient
+(
+    JNIEnv* env,
+    jobject __unused thisObject,
+    jstring descriptor
+)
+{
+    if (!env)
+        return nullptr;
+    ConfigFile *config = (ConfigFile *) descriptorJ2C(env->GetStringUTFChars(descriptor, NULL));
+    MCSClient *client = new MCSClient(
+            config->subscriptions,
+            config->wpnKeys->getPrivateKey(),
+            config->wpnKeys->getAuthSecret(),
+            config->wpnKeys->id,
+            config->wpnKeys->secret,
+            internalOnNotify, client, nullptr, nullptr, 0
+    );
+    int r = client->connect();
+    if (r) {
+        delete client;
+        return  nullptr;
+    }
+    return client;
 }
