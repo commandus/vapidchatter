@@ -86,30 +86,25 @@ class GservicesSetting::_Internal {
   static void set_has_value(HasBits* has_bits) {
     (*has_bits)[0] |= 2u;
   }
-  static bool MissingRequiredFields(const HasBits& has_bits) {
-    return ((has_bits[0] & 0x00000003) ^ 0x00000003) != 0;
-  }
 };
 
-GservicesSetting::GservicesSetting(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::MessageLite(arena) {
+GservicesSetting::GservicesSetting()
+  : ::PROTOBUF_NAMESPACE_ID::MessageLite(), _internal_metadata_(nullptr) {
   SharedCtor();
-  RegisterArenaDtor(arena);
-  // @@protoc_insertion_point(arena_constructor:checkin_proto.GservicesSetting)
+  // @@protoc_insertion_point(constructor:checkin_proto.GservicesSetting)
 }
 GservicesSetting::GservicesSetting(const GservicesSetting& from)
   : ::PROTOBUF_NAMESPACE_ID::MessageLite(),
+      _internal_metadata_(nullptr),
       _has_bits_(from._has_bits_) {
-  _internal_metadata_.MergeFrom<std::string>(from._internal_metadata_);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
   name_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (from._internal_has_name()) {
-    name_.SetLite(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from._internal_name(),
-      GetArena());
+    name_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.name_);
   }
   value_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (from._internal_has_value()) {
-    value_.SetLite(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from._internal_value(),
-      GetArena());
+    value_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.value_);
   }
   // @@protoc_insertion_point(copy_constructor:checkin_proto.GservicesSetting)
 }
@@ -123,21 +118,13 @@ void GservicesSetting::SharedCtor() {
 GservicesSetting::~GservicesSetting() {
   // @@protoc_insertion_point(destructor:checkin_proto.GservicesSetting)
   SharedDtor();
-  _internal_metadata_.Delete<std::string>();
 }
 
 void GservicesSetting::SharedDtor() {
-  GOOGLE_DCHECK(GetArena() == nullptr);
   name_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   value_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 }
 
-void GservicesSetting::ArenaDtor(void* object) {
-  GservicesSetting* _this = reinterpret_cast< GservicesSetting* >(object);
-  (void)_this;
-}
-void GservicesSetting::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
-}
 void GservicesSetting::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
@@ -156,20 +143,19 @@ void GservicesSetting::Clear() {
   cached_has_bits = _has_bits_[0];
   if (cached_has_bits & 0x00000003u) {
     if (cached_has_bits & 0x00000001u) {
-      name_.ClearNonDefaultToEmpty();
+      name_.ClearNonDefaultToEmptyNoArena();
     }
     if (cached_has_bits & 0x00000002u) {
-      value_.ClearNonDefaultToEmpty();
+      value_.ClearNonDefaultToEmptyNoArena();
     }
   }
   _has_bits_.Clear();
-  _internal_metadata_.Clear<std::string>();
+  _internal_metadata_.Clear();
 }
 
 const char* GservicesSetting::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   _Internal::HasBits has_bits{};
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -197,9 +183,7 @@ const char* GservicesSetting::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPA
           ctx->SetLastTag(tag);
           goto success;
         }
-        ptr = UnknownFieldParse(tag,
-            _internal_metadata_.mutable_unknown_fields<std::string>(),
-            ptr, ctx);
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
         CHK_(ptr != nullptr);
         continue;
       }
@@ -234,8 +218,8 @@ failure:
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = stream->WriteRaw(_internal_metadata_.unknown_fields<std::string>(::PROTOBUF_NAMESPACE_ID::internal::GetEmptyString).data(),
-        static_cast<int>(_internal_metadata_.unknown_fields<std::string>(::PROTOBUF_NAMESPACE_ID::internal::GetEmptyString).size()), target);
+    target = stream->WriteRaw(_internal_metadata_.unknown_fields().data(),
+        static_cast<int>(_internal_metadata_.unknown_fields().size()), target);
   }
   // @@protoc_insertion_point(serialize_to_array_end:checkin_proto.GservicesSetting)
   return target;
@@ -284,7 +268,7 @@ size_t GservicesSetting::ByteSizeLong() const {
   (void) cached_has_bits;
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    total_size += _internal_metadata_.unknown_fields<std::string>(::PROTOBUF_NAMESPACE_ID::internal::GetEmptyString).size();
+    total_size += _internal_metadata_.unknown_fields().size();
   }
   int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
@@ -300,17 +284,19 @@ void GservicesSetting::CheckTypeAndMergeFrom(
 void GservicesSetting::MergeFrom(const GservicesSetting& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:checkin_proto.GservicesSetting)
   GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom<std::string>(from._internal_metadata_);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   cached_has_bits = from._has_bits_[0];
   if (cached_has_bits & 0x00000003u) {
     if (cached_has_bits & 0x00000001u) {
-      _internal_set_name(from._internal_name());
+      _has_bits_[0] |= 0x00000001u;
+      name_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.name_);
     }
     if (cached_has_bits & 0x00000002u) {
-      _internal_set_value(from._internal_value());
+      _has_bits_[0] |= 0x00000002u;
+      value_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.value_);
     }
   }
 }
@@ -323,16 +309,18 @@ void GservicesSetting::CopyFrom(const GservicesSetting& from) {
 }
 
 bool GservicesSetting::IsInitialized() const {
-  if (_Internal::MissingRequiredFields(_has_bits_)) return false;
+  if ((_has_bits_[0] & 0x00000003) != 0x00000003) return false;
   return true;
 }
 
 void GservicesSetting::InternalSwap(GservicesSetting* other) {
   using std::swap;
-  _internal_metadata_.Swap<std::string>(&other->_internal_metadata_);
+  _internal_metadata_.Swap(&other->_internal_metadata_);
   swap(_has_bits_[0], other->_has_bits_[0]);
-  name_.Swap(&other->name_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-  value_.Swap(&other->value_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  name_.Swap(&other->name_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+    GetArenaNoVirtual());
+  value_.Swap(&other->value_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+    GetArenaNoVirtual());
 }
 
 std::string GservicesSetting::GetTypeName() const {
@@ -401,9 +389,6 @@ class AndroidCheckinRequest::_Internal {
   static void set_has_user_serial_number(HasBits* has_bits) {
     (*has_bits)[0] |= 65536u;
   }
-  static bool MissingRequiredFields(const HasBits& has_bits) {
-    return ((has_bits[0] & 0x00000400) ^ 0x00000400) != 0;
-  }
 };
 
 const ::checkin_proto::AndroidCheckinProto&
@@ -414,73 +399,59 @@ void AndroidCheckinRequest::clear_checkin() {
   if (checkin_ != nullptr) checkin_->Clear();
   _has_bits_[0] &= ~0x00000400u;
 }
-AndroidCheckinRequest::AndroidCheckinRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::MessageLite(arena),
-  mac_addr_(arena),
-  account_cookie_(arena),
-  ota_cert_(arena),
-  mac_addr_type_(arena) {
+AndroidCheckinRequest::AndroidCheckinRequest()
+  : ::PROTOBUF_NAMESPACE_ID::MessageLite(), _internal_metadata_(nullptr) {
   SharedCtor();
-  RegisterArenaDtor(arena);
-  // @@protoc_insertion_point(arena_constructor:checkin_proto.AndroidCheckinRequest)
+  // @@protoc_insertion_point(constructor:checkin_proto.AndroidCheckinRequest)
 }
 AndroidCheckinRequest::AndroidCheckinRequest(const AndroidCheckinRequest& from)
   : ::PROTOBUF_NAMESPACE_ID::MessageLite(),
+      _internal_metadata_(nullptr),
       _has_bits_(from._has_bits_),
       mac_addr_(from.mac_addr_),
       account_cookie_(from.account_cookie_),
       ota_cert_(from.ota_cert_),
       mac_addr_type_(from.mac_addr_type_) {
-  _internal_metadata_.MergeFrom<std::string>(from._internal_metadata_);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
   imei_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (from._internal_has_imei()) {
-    imei_.SetLite(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from._internal_imei(),
-      GetArena());
+    imei_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.imei_);
   }
   digest_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (from._internal_has_digest()) {
-    digest_.SetLite(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from._internal_digest(),
-      GetArena());
+    digest_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.digest_);
   }
   desired_build_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (from._internal_has_desired_build()) {
-    desired_build_.SetLite(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from._internal_desired_build(),
-      GetArena());
+    desired_build_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.desired_build_);
   }
   locale_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (from._internal_has_locale()) {
-    locale_.SetLite(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from._internal_locale(),
-      GetArena());
+    locale_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.locale_);
   }
   market_checkin_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (from._internal_has_market_checkin()) {
-    market_checkin_.SetLite(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from._internal_market_checkin(),
-      GetArena());
+    market_checkin_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.market_checkin_);
   }
   meid_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (from._internal_has_meid()) {
-    meid_.SetLite(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from._internal_meid(),
-      GetArena());
+    meid_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.meid_);
   }
   time_zone_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (from._internal_has_time_zone()) {
-    time_zone_.SetLite(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from._internal_time_zone(),
-      GetArena());
+    time_zone_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.time_zone_);
   }
   serial_number_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (from._internal_has_serial_number()) {
-    serial_number_.SetLite(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from._internal_serial_number(),
-      GetArena());
+    serial_number_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.serial_number_);
   }
   esn_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (from._internal_has_esn()) {
-    esn_.SetLite(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from._internal_esn(),
-      GetArena());
+    esn_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.esn_);
   }
   user_name_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (from._internal_has_user_name()) {
-    user_name_.SetLite(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from._internal_user_name(),
-      GetArena());
+    user_name_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.user_name_);
   }
   if (from._internal_has_checkin()) {
     checkin_ = new ::checkin_proto::AndroidCheckinProto(*from.checkin_);
@@ -513,11 +484,9 @@ void AndroidCheckinRequest::SharedCtor() {
 AndroidCheckinRequest::~AndroidCheckinRequest() {
   // @@protoc_insertion_point(destructor:checkin_proto.AndroidCheckinRequest)
   SharedDtor();
-  _internal_metadata_.Delete<std::string>();
 }
 
 void AndroidCheckinRequest::SharedDtor() {
-  GOOGLE_DCHECK(GetArena() == nullptr);
   imei_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   digest_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   desired_build_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
@@ -531,12 +500,6 @@ void AndroidCheckinRequest::SharedDtor() {
   if (this != internal_default_instance()) delete checkin_;
 }
 
-void AndroidCheckinRequest::ArenaDtor(void* object) {
-  AndroidCheckinRequest* _this = reinterpret_cast< AndroidCheckinRequest* >(object);
-  (void)_this;
-}
-void AndroidCheckinRequest::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
-}
 void AndroidCheckinRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
@@ -559,36 +522,36 @@ void AndroidCheckinRequest::Clear() {
   cached_has_bits = _has_bits_[0];
   if (cached_has_bits & 0x000000ffu) {
     if (cached_has_bits & 0x00000001u) {
-      imei_.ClearNonDefaultToEmpty();
+      imei_.ClearNonDefaultToEmptyNoArena();
     }
     if (cached_has_bits & 0x00000002u) {
-      digest_.ClearNonDefaultToEmpty();
+      digest_.ClearNonDefaultToEmptyNoArena();
     }
     if (cached_has_bits & 0x00000004u) {
-      desired_build_.ClearNonDefaultToEmpty();
+      desired_build_.ClearNonDefaultToEmptyNoArena();
     }
     if (cached_has_bits & 0x00000008u) {
-      locale_.ClearNonDefaultToEmpty();
+      locale_.ClearNonDefaultToEmptyNoArena();
     }
     if (cached_has_bits & 0x00000010u) {
-      market_checkin_.ClearNonDefaultToEmpty();
+      market_checkin_.ClearNonDefaultToEmptyNoArena();
     }
     if (cached_has_bits & 0x00000020u) {
-      meid_.ClearNonDefaultToEmpty();
+      meid_.ClearNonDefaultToEmptyNoArena();
     }
     if (cached_has_bits & 0x00000040u) {
-      time_zone_.ClearNonDefaultToEmpty();
+      time_zone_.ClearNonDefaultToEmptyNoArena();
     }
     if (cached_has_bits & 0x00000080u) {
-      serial_number_.ClearNonDefaultToEmpty();
+      serial_number_.ClearNonDefaultToEmptyNoArena();
     }
   }
   if (cached_has_bits & 0x00000700u) {
     if (cached_has_bits & 0x00000100u) {
-      esn_.ClearNonDefaultToEmpty();
+      esn_.ClearNonDefaultToEmptyNoArena();
     }
     if (cached_has_bits & 0x00000200u) {
-      user_name_.ClearNonDefaultToEmpty();
+      user_name_.ClearNonDefaultToEmptyNoArena();
     }
     if (cached_has_bits & 0x00000400u) {
       GOOGLE_DCHECK(checkin_ != nullptr);
@@ -602,13 +565,12 @@ void AndroidCheckinRequest::Clear() {
   }
   user_serial_number_ = 0;
   _has_bits_.Clear();
-  _internal_metadata_.Clear<std::string>();
+  _internal_metadata_.Clear();
 }
 
 const char* AndroidCheckinRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   _Internal::HasBits has_bits{};
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -626,7 +588,7 @@ const char* AndroidCheckinRequest::_InternalParse(const char* ptr, ::PROTOBUF_NA
       case 2:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 16)) {
           _Internal::set_has_id(&has_bits);
-          id_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          id_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -665,7 +627,7 @@ const char* AndroidCheckinRequest::_InternalParse(const char* ptr, ::PROTOBUF_NA
       case 7:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 56)) {
           _Internal::set_has_logging_id(&has_bits);
-          logging_id_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          logging_id_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -731,7 +693,7 @@ const char* AndroidCheckinRequest::_InternalParse(const char* ptr, ::PROTOBUF_NA
       case 14:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 112)) {
           _Internal::set_has_version(&has_bits);
-          version_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          version_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -781,7 +743,7 @@ const char* AndroidCheckinRequest::_InternalParse(const char* ptr, ::PROTOBUF_NA
       case 20:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 160)) {
           _Internal::set_has_fragment(&has_bits);
-          fragment_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          fragment_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -797,7 +759,7 @@ const char* AndroidCheckinRequest::_InternalParse(const char* ptr, ::PROTOBUF_NA
       case 22:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 176)) {
           _Internal::set_has_user_serial_number(&has_bits);
-          user_serial_number_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          user_serial_number_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -807,9 +769,7 @@ const char* AndroidCheckinRequest::_InternalParse(const char* ptr, ::PROTOBUF_NA
           ctx->SetLastTag(tag);
           goto success;
         }
-        ptr = UnknownFieldParse(tag,
-            _internal_metadata_.mutable_unknown_fields<std::string>(),
-            ptr, ctx);
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
         CHK_(ptr != nullptr);
         continue;
       }
@@ -960,8 +920,8 @@ failure:
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = stream->WriteRaw(_internal_metadata_.unknown_fields<std::string>(::PROTOBUF_NAMESPACE_ID::internal::GetEmptyString).data(),
-        static_cast<int>(_internal_metadata_.unknown_fields<std::string>(::PROTOBUF_NAMESPACE_ID::internal::GetEmptyString).size()), target);
+    target = stream->WriteRaw(_internal_metadata_.unknown_fields().data(),
+        static_cast<int>(_internal_metadata_.unknown_fields().size()), target);
   }
   // @@protoc_insertion_point(serialize_to_array_end:checkin_proto.AndroidCheckinRequest)
   return target;
@@ -1131,7 +1091,7 @@ size_t AndroidCheckinRequest::ByteSizeLong() const {
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    total_size += _internal_metadata_.unknown_fields<std::string>(::PROTOBUF_NAMESPACE_ID::internal::GetEmptyString).size();
+    total_size += _internal_metadata_.unknown_fields().size();
   }
   int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
@@ -1147,7 +1107,7 @@ void AndroidCheckinRequest::CheckTypeAndMergeFrom(
 void AndroidCheckinRequest::MergeFrom(const AndroidCheckinRequest& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:checkin_proto.AndroidCheckinRequest)
   GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom<std::string>(from._internal_metadata_);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -1158,36 +1118,46 @@ void AndroidCheckinRequest::MergeFrom(const AndroidCheckinRequest& from) {
   cached_has_bits = from._has_bits_[0];
   if (cached_has_bits & 0x000000ffu) {
     if (cached_has_bits & 0x00000001u) {
-      _internal_set_imei(from._internal_imei());
+      _has_bits_[0] |= 0x00000001u;
+      imei_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.imei_);
     }
     if (cached_has_bits & 0x00000002u) {
-      _internal_set_digest(from._internal_digest());
+      _has_bits_[0] |= 0x00000002u;
+      digest_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.digest_);
     }
     if (cached_has_bits & 0x00000004u) {
-      _internal_set_desired_build(from._internal_desired_build());
+      _has_bits_[0] |= 0x00000004u;
+      desired_build_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.desired_build_);
     }
     if (cached_has_bits & 0x00000008u) {
-      _internal_set_locale(from._internal_locale());
+      _has_bits_[0] |= 0x00000008u;
+      locale_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.locale_);
     }
     if (cached_has_bits & 0x00000010u) {
-      _internal_set_market_checkin(from._internal_market_checkin());
+      _has_bits_[0] |= 0x00000010u;
+      market_checkin_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.market_checkin_);
     }
     if (cached_has_bits & 0x00000020u) {
-      _internal_set_meid(from._internal_meid());
+      _has_bits_[0] |= 0x00000020u;
+      meid_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.meid_);
     }
     if (cached_has_bits & 0x00000040u) {
-      _internal_set_time_zone(from._internal_time_zone());
+      _has_bits_[0] |= 0x00000040u;
+      time_zone_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.time_zone_);
     }
     if (cached_has_bits & 0x00000080u) {
-      _internal_set_serial_number(from._internal_serial_number());
+      _has_bits_[0] |= 0x00000080u;
+      serial_number_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.serial_number_);
     }
   }
   if (cached_has_bits & 0x0000ff00u) {
     if (cached_has_bits & 0x00000100u) {
-      _internal_set_esn(from._internal_esn());
+      _has_bits_[0] |= 0x00000100u;
+      esn_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.esn_);
     }
     if (cached_has_bits & 0x00000200u) {
-      _internal_set_user_name(from._internal_user_name());
+      _has_bits_[0] |= 0x00000200u;
+      user_name_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.user_name_);
     }
     if (cached_has_bits & 0x00000400u) {
       _internal_mutable_checkin()->::checkin_proto::AndroidCheckinProto::MergeFrom(from._internal_checkin());
@@ -1222,34 +1192,45 @@ void AndroidCheckinRequest::CopyFrom(const AndroidCheckinRequest& from) {
 }
 
 bool AndroidCheckinRequest::IsInitialized() const {
-  if (_Internal::MissingRequiredFields(_has_bits_)) return false;
+  if ((_has_bits_[0] & 0x00000400) != 0x00000400) return false;
   return true;
 }
 
 void AndroidCheckinRequest::InternalSwap(AndroidCheckinRequest* other) {
   using std::swap;
-  _internal_metadata_.Swap<std::string>(&other->_internal_metadata_);
+  _internal_metadata_.Swap(&other->_internal_metadata_);
   swap(_has_bits_[0], other->_has_bits_[0]);
   mac_addr_.InternalSwap(&other->mac_addr_);
   account_cookie_.InternalSwap(&other->account_cookie_);
   ota_cert_.InternalSwap(&other->ota_cert_);
   mac_addr_type_.InternalSwap(&other->mac_addr_type_);
-  imei_.Swap(&other->imei_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-  digest_.Swap(&other->digest_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-  desired_build_.Swap(&other->desired_build_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-  locale_.Swap(&other->locale_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-  market_checkin_.Swap(&other->market_checkin_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-  meid_.Swap(&other->meid_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-  time_zone_.Swap(&other->time_zone_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-  serial_number_.Swap(&other->serial_number_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-  esn_.Swap(&other->esn_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-  user_name_.Swap(&other->user_name_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(AndroidCheckinRequest, user_serial_number_)
-      + sizeof(AndroidCheckinRequest::user_serial_number_)
-      - PROTOBUF_FIELD_OFFSET(AndroidCheckinRequest, checkin_)>(
-          reinterpret_cast<char*>(&checkin_),
-          reinterpret_cast<char*>(&other->checkin_));
+  imei_.Swap(&other->imei_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+    GetArenaNoVirtual());
+  digest_.Swap(&other->digest_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+    GetArenaNoVirtual());
+  desired_build_.Swap(&other->desired_build_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+    GetArenaNoVirtual());
+  locale_.Swap(&other->locale_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+    GetArenaNoVirtual());
+  market_checkin_.Swap(&other->market_checkin_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+    GetArenaNoVirtual());
+  meid_.Swap(&other->meid_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+    GetArenaNoVirtual());
+  time_zone_.Swap(&other->time_zone_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+    GetArenaNoVirtual());
+  serial_number_.Swap(&other->serial_number_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+    GetArenaNoVirtual());
+  esn_.Swap(&other->esn_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+    GetArenaNoVirtual());
+  user_name_.Swap(&other->user_name_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+    GetArenaNoVirtual());
+  swap(checkin_, other->checkin_);
+  swap(id_, other->id_);
+  swap(logging_id_, other->logging_id_);
+  swap(security_token_, other->security_token_);
+  swap(version_, other->version_);
+  swap(fragment_, other->fragment_);
+  swap(user_serial_number_, other->user_serial_number_);
 }
 
 std::string AndroidCheckinRequest::GetTypeName() const {
@@ -1288,34 +1269,27 @@ class AndroidCheckinResponse::_Internal {
   static void set_has_version_info(HasBits* has_bits) {
     (*has_bits)[0] |= 2u;
   }
-  static bool MissingRequiredFields(const HasBits& has_bits) {
-    return ((has_bits[0] & 0x00000020) ^ 0x00000020) != 0;
-  }
 };
 
-AndroidCheckinResponse::AndroidCheckinResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::MessageLite(arena),
-  setting_(arena),
-  delete_setting_(arena) {
+AndroidCheckinResponse::AndroidCheckinResponse()
+  : ::PROTOBUF_NAMESPACE_ID::MessageLite(), _internal_metadata_(nullptr) {
   SharedCtor();
-  RegisterArenaDtor(arena);
-  // @@protoc_insertion_point(arena_constructor:checkin_proto.AndroidCheckinResponse)
+  // @@protoc_insertion_point(constructor:checkin_proto.AndroidCheckinResponse)
 }
 AndroidCheckinResponse::AndroidCheckinResponse(const AndroidCheckinResponse& from)
   : ::PROTOBUF_NAMESPACE_ID::MessageLite(),
+      _internal_metadata_(nullptr),
       _has_bits_(from._has_bits_),
       setting_(from.setting_),
       delete_setting_(from.delete_setting_) {
-  _internal_metadata_.MergeFrom<std::string>(from._internal_metadata_);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
   digest_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (from._internal_has_digest()) {
-    digest_.SetLite(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from._internal_digest(),
-      GetArena());
+    digest_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.digest_);
   }
   version_info_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (from._internal_has_version_info()) {
-    version_info_.SetLite(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from._internal_version_info(),
-      GetArena());
+    version_info_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.version_info_);
   }
   ::memcpy(&time_msec_, &from.time_msec_,
     static_cast<size_t>(reinterpret_cast<char*>(&market_ok_) -
@@ -1335,21 +1309,13 @@ void AndroidCheckinResponse::SharedCtor() {
 AndroidCheckinResponse::~AndroidCheckinResponse() {
   // @@protoc_insertion_point(destructor:checkin_proto.AndroidCheckinResponse)
   SharedDtor();
-  _internal_metadata_.Delete<std::string>();
 }
 
 void AndroidCheckinResponse::SharedDtor() {
-  GOOGLE_DCHECK(GetArena() == nullptr);
   digest_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   version_info_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 }
 
-void AndroidCheckinResponse::ArenaDtor(void* object) {
-  AndroidCheckinResponse* _this = reinterpret_cast< AndroidCheckinResponse* >(object);
-  (void)_this;
-}
-void AndroidCheckinResponse::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
-}
 void AndroidCheckinResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
@@ -1370,10 +1336,10 @@ void AndroidCheckinResponse::Clear() {
   cached_has_bits = _has_bits_[0];
   if (cached_has_bits & 0x00000003u) {
     if (cached_has_bits & 0x00000001u) {
-      digest_.ClearNonDefaultToEmpty();
+      digest_.ClearNonDefaultToEmptyNoArena();
     }
     if (cached_has_bits & 0x00000002u) {
-      version_info_.ClearNonDefaultToEmpty();
+      version_info_.ClearNonDefaultToEmptyNoArena();
     }
   }
   if (cached_has_bits & 0x000000fcu) {
@@ -1382,13 +1348,12 @@ void AndroidCheckinResponse::Clear() {
         reinterpret_cast<char*>(&time_msec_)) + sizeof(market_ok_));
   }
   _has_bits_.Clear();
-  _internal_metadata_.Clear<std::string>();
+  _internal_metadata_.Clear();
 }
 
 const char* AndroidCheckinResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   _Internal::HasBits has_bits{};
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -1398,7 +1363,7 @@ const char* AndroidCheckinResponse::_InternalParse(const char* ptr, ::PROTOBUF_N
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 8)) {
           _Internal::set_has_stats_ok(&has_bits);
-          stats_ok_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          stats_ok_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -1406,7 +1371,7 @@ const char* AndroidCheckinResponse::_InternalParse(const char* ptr, ::PROTOBUF_N
       case 3:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 24)) {
           _Internal::set_has_time_msec(&has_bits);
-          time_msec_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          time_msec_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -1434,7 +1399,7 @@ const char* AndroidCheckinResponse::_InternalParse(const char* ptr, ::PROTOBUF_N
       case 6:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 48)) {
           _Internal::set_has_market_ok(&has_bits);
-          market_ok_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          market_ok_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -1458,7 +1423,7 @@ const char* AndroidCheckinResponse::_InternalParse(const char* ptr, ::PROTOBUF_N
       case 9:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 72)) {
           _Internal::set_has_settings_diff(&has_bits);
-          settings_diff_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          settings_diff_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -1489,9 +1454,7 @@ const char* AndroidCheckinResponse::_InternalParse(const char* ptr, ::PROTOBUF_N
           ctx->SetLastTag(tag);
           goto success;
         }
-        ptr = UnknownFieldParse(tag,
-            _internal_metadata_.mutable_unknown_fields<std::string>(),
-            ptr, ctx);
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
         CHK_(ptr != nullptr);
         continue;
       }
@@ -1576,8 +1539,8 @@ failure:
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = stream->WriteRaw(_internal_metadata_.unknown_fields<std::string>(::PROTOBUF_NAMESPACE_ID::internal::GetEmptyString).data(),
-        static_cast<int>(_internal_metadata_.unknown_fields<std::string>(::PROTOBUF_NAMESPACE_ID::internal::GetEmptyString).size()), target);
+    target = stream->WriteRaw(_internal_metadata_.unknown_fields().data(),
+        static_cast<int>(_internal_metadata_.unknown_fields().size()), target);
   }
   // @@protoc_insertion_point(serialize_to_array_end:checkin_proto.AndroidCheckinResponse)
   return target;
@@ -1657,7 +1620,7 @@ size_t AndroidCheckinResponse::ByteSizeLong() const {
 
   }
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    total_size += _internal_metadata_.unknown_fields<std::string>(::PROTOBUF_NAMESPACE_ID::internal::GetEmptyString).size();
+    total_size += _internal_metadata_.unknown_fields().size();
   }
   int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
@@ -1673,7 +1636,7 @@ void AndroidCheckinResponse::CheckTypeAndMergeFrom(
 void AndroidCheckinResponse::MergeFrom(const AndroidCheckinResponse& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:checkin_proto.AndroidCheckinResponse)
   GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom<std::string>(from._internal_metadata_);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -1682,10 +1645,12 @@ void AndroidCheckinResponse::MergeFrom(const AndroidCheckinResponse& from) {
   cached_has_bits = from._has_bits_[0];
   if (cached_has_bits & 0x000000ffu) {
     if (cached_has_bits & 0x00000001u) {
-      _internal_set_digest(from._internal_digest());
+      _has_bits_[0] |= 0x00000001u;
+      digest_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.digest_);
     }
     if (cached_has_bits & 0x00000002u) {
-      _internal_set_version_info(from._internal_version_info());
+      _has_bits_[0] |= 0x00000002u;
+      version_info_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.version_info_);
     }
     if (cached_has_bits & 0x00000004u) {
       time_msec_ = from.time_msec_;
@@ -1717,25 +1682,27 @@ void AndroidCheckinResponse::CopyFrom(const AndroidCheckinResponse& from) {
 }
 
 bool AndroidCheckinResponse::IsInitialized() const {
-  if (_Internal::MissingRequiredFields(_has_bits_)) return false;
+  if ((_has_bits_[0] & 0x00000020) != 0x00000020) return false;
   if (!::PROTOBUF_NAMESPACE_ID::internal::AllAreInitialized(setting_)) return false;
   return true;
 }
 
 void AndroidCheckinResponse::InternalSwap(AndroidCheckinResponse* other) {
   using std::swap;
-  _internal_metadata_.Swap<std::string>(&other->_internal_metadata_);
+  _internal_metadata_.Swap(&other->_internal_metadata_);
   swap(_has_bits_[0], other->_has_bits_[0]);
   setting_.InternalSwap(&other->setting_);
   delete_setting_.InternalSwap(&other->delete_setting_);
-  digest_.Swap(&other->digest_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-  version_info_.Swap(&other->version_info_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(AndroidCheckinResponse, market_ok_)
-      + sizeof(AndroidCheckinResponse::market_ok_)
-      - PROTOBUF_FIELD_OFFSET(AndroidCheckinResponse, time_msec_)>(
-          reinterpret_cast<char*>(&time_msec_),
-          reinterpret_cast<char*>(&other->time_msec_));
+  digest_.Swap(&other->digest_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+    GetArenaNoVirtual());
+  version_info_.Swap(&other->version_info_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+    GetArenaNoVirtual());
+  swap(time_msec_, other->time_msec_);
+  swap(android_id_, other->android_id_);
+  swap(security_token_, other->security_token_);
+  swap(stats_ok_, other->stats_ok_);
+  swap(settings_diff_, other->settings_diff_);
+  swap(market_ok_, other->market_ok_);
 }
 
 std::string AndroidCheckinResponse::GetTypeName() const {
@@ -1747,13 +1714,13 @@ std::string AndroidCheckinResponse::GetTypeName() const {
 }  // namespace checkin_proto
 PROTOBUF_NAMESPACE_OPEN
 template<> PROTOBUF_NOINLINE ::checkin_proto::GservicesSetting* Arena::CreateMaybeMessage< ::checkin_proto::GservicesSetting >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::checkin_proto::GservicesSetting >(arena);
+  return Arena::CreateInternal< ::checkin_proto::GservicesSetting >(arena);
 }
 template<> PROTOBUF_NOINLINE ::checkin_proto::AndroidCheckinRequest* Arena::CreateMaybeMessage< ::checkin_proto::AndroidCheckinRequest >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::checkin_proto::AndroidCheckinRequest >(arena);
+  return Arena::CreateInternal< ::checkin_proto::AndroidCheckinRequest >(arena);
 }
 template<> PROTOBUF_NOINLINE ::checkin_proto::AndroidCheckinResponse* Arena::CreateMaybeMessage< ::checkin_proto::AndroidCheckinResponse >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::checkin_proto::AndroidCheckinResponse >(arena);
+  return Arena::CreateInternal< ::checkin_proto::AndroidCheckinResponse >(arena);
 }
 PROTOBUF_NAMESPACE_CLOSE
 

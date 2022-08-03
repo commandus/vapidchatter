@@ -18,13 +18,17 @@ LIB_86=$LIBA/x86
 LIB_ARM64=$LIBA/arm64-v8a
 LIB_X86_64=$LIBA/x86_64
 
-rm $LIB_EABI/libssl.a $LIB_EABI/libcrypto.a
-rm $LIB_86/libssl.a $LIB_86/libcrypto.a
-rm $LIB_ARM64/libssl.a $LIB_ARM64/libcrypto.a
-rm $LIB_X86_64/libssl.a $LIB_X86_64/libcrypto.a
+mkdir -p $LIB_EABI
+mkdir -p $LIB_86
+mkdir -p $LIB_ARM64
+mkdir -p $LIB_X86_64
+
+# rm $LIB_EABI/libssl.a $LIB_EABI/libcrypto.a
+# rm $LIB_86/libssl.a $LIB_86/libcrypto.a
+# rm $LIB_ARM64/libssl.a $LIB_ARM64/libcrypto.a
+# rm $LIB_X86_64/libssl.a $LIB_X86_64/libcrypto.a
 
 LIBS="libcrypto.a libssl.a"
-# libcrypto.so libssl.so
 
 # Archs are:
 # OpenSSL: android-arm, android-arm64, android-mips, android-mip64, android-x86 and android-x86_64

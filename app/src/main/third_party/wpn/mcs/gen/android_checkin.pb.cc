@@ -110,7 +110,7 @@ const std::string& ChromeBuildProto_Platform_Name(
                      ChromeBuildProto_Platform_strings[idx].get();
 }
 bool ChromeBuildProto_Platform_Parse(
-    ::PROTOBUF_NAMESPACE_ID::ConstStringParam name, ChromeBuildProto_Platform* value) {
+    const std::string& name, ChromeBuildProto_Platform* value) {
   int int_value;
   bool success = ::PROTOBUF_NAMESPACE_ID::internal::LookUpEnumValue(
       ChromeBuildProto_Platform_entries, 6, name, &int_value);
@@ -184,7 +184,7 @@ const std::string& ChromeBuildProto_Channel_Name(
                      ChromeBuildProto_Channel_strings[idx].get();
 }
 bool ChromeBuildProto_Channel_Parse(
-    ::PROTOBUF_NAMESPACE_ID::ConstStringParam name, ChromeBuildProto_Channel* value) {
+    const std::string& name, ChromeBuildProto_Channel* value) {
   int int_value;
   bool success = ::PROTOBUF_NAMESPACE_ID::internal::LookUpEnumValue(
       ChromeBuildProto_Channel_entries, 5, name, &int_value);
@@ -253,7 +253,7 @@ const std::string& DeviceType_Name(
                      DeviceType_strings[idx].get();
 }
 bool DeviceType_Parse(
-    ::PROTOBUF_NAMESPACE_ID::ConstStringParam name, DeviceType* value) {
+    const std::string& name, DeviceType* value) {
   int int_value;
   bool success = ::PROTOBUF_NAMESPACE_ID::internal::LookUpEnumValue(
       DeviceType_entries, 4, name, &int_value);
@@ -281,20 +281,19 @@ class ChromeBuildProto::_Internal {
   }
 };
 
-ChromeBuildProto::ChromeBuildProto(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::MessageLite(arena) {
+ChromeBuildProto::ChromeBuildProto()
+  : ::PROTOBUF_NAMESPACE_ID::MessageLite(), _internal_metadata_(nullptr) {
   SharedCtor();
-  RegisterArenaDtor(arena);
-  // @@protoc_insertion_point(arena_constructor:checkin_proto.ChromeBuildProto)
+  // @@protoc_insertion_point(constructor:checkin_proto.ChromeBuildProto)
 }
 ChromeBuildProto::ChromeBuildProto(const ChromeBuildProto& from)
   : ::PROTOBUF_NAMESPACE_ID::MessageLite(),
+      _internal_metadata_(nullptr),
       _has_bits_(from._has_bits_) {
-  _internal_metadata_.MergeFrom<std::string>(from._internal_metadata_);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
   chrome_version_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (from._internal_has_chrome_version()) {
-    chrome_version_.SetLite(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from._internal_chrome_version(),
-      GetArena());
+    chrome_version_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.chrome_version_);
   }
   ::memcpy(&platform_, &from.platform_,
     static_cast<size_t>(reinterpret_cast<char*>(&channel_) -
@@ -312,20 +311,12 @@ void ChromeBuildProto::SharedCtor() {
 ChromeBuildProto::~ChromeBuildProto() {
   // @@protoc_insertion_point(destructor:checkin_proto.ChromeBuildProto)
   SharedDtor();
-  _internal_metadata_.Delete<std::string>();
 }
 
 void ChromeBuildProto::SharedDtor() {
-  GOOGLE_DCHECK(GetArena() == nullptr);
   chrome_version_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 }
 
-void ChromeBuildProto::ArenaDtor(void* object) {
-  ChromeBuildProto* _this = reinterpret_cast< ChromeBuildProto* >(object);
-  (void)_this;
-}
-void ChromeBuildProto::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
-}
 void ChromeBuildProto::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
@@ -344,19 +335,18 @@ void ChromeBuildProto::Clear() {
   cached_has_bits = _has_bits_[0];
   if (cached_has_bits & 0x00000007u) {
     if (cached_has_bits & 0x00000001u) {
-      chrome_version_.ClearNonDefaultToEmpty();
+      chrome_version_.ClearNonDefaultToEmptyNoArena();
     }
     platform_ = 1;
     channel_ = 1;
   }
   _has_bits_.Clear();
-  _internal_metadata_.Clear<std::string>();
+  _internal_metadata_.Clear();
 }
 
 const char* ChromeBuildProto::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   _Internal::HasBits has_bits{};
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -365,7 +355,7 @@ const char* ChromeBuildProto::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPA
       // optional .checkin_proto.ChromeBuildProto.Platform platform = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 8)) {
-          ::PROTOBUF_NAMESPACE_ID::uint64 val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          ::PROTOBUF_NAMESPACE_ID::uint64 val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
           CHK_(ptr);
           if (PROTOBUF_PREDICT_TRUE(::checkin_proto::ChromeBuildProto_Platform_IsValid(val))) {
             _internal_set_platform(static_cast<::checkin_proto::ChromeBuildProto_Platform>(val));
@@ -385,7 +375,7 @@ const char* ChromeBuildProto::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPA
       // optional .checkin_proto.ChromeBuildProto.Channel channel = 3;
       case 3:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 24)) {
-          ::PROTOBUF_NAMESPACE_ID::uint64 val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          ::PROTOBUF_NAMESPACE_ID::uint64 val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
           CHK_(ptr);
           if (PROTOBUF_PREDICT_TRUE(::checkin_proto::ChromeBuildProto_Channel_IsValid(val))) {
             _internal_set_channel(static_cast<::checkin_proto::ChromeBuildProto_Channel>(val));
@@ -400,9 +390,7 @@ const char* ChromeBuildProto::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPA
           ctx->SetLastTag(tag);
           goto success;
         }
-        ptr = UnknownFieldParse(tag,
-            _internal_metadata_.mutable_unknown_fields<std::string>(),
-            ptr, ctx);
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
         CHK_(ptr != nullptr);
         continue;
       }
@@ -445,8 +433,8 @@ failure:
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = stream->WriteRaw(_internal_metadata_.unknown_fields<std::string>(::PROTOBUF_NAMESPACE_ID::internal::GetEmptyString).data(),
-        static_cast<int>(_internal_metadata_.unknown_fields<std::string>(::PROTOBUF_NAMESPACE_ID::internal::GetEmptyString).size()), target);
+    target = stream->WriteRaw(_internal_metadata_.unknown_fields().data(),
+        static_cast<int>(_internal_metadata_.unknown_fields().size()), target);
   }
   // @@protoc_insertion_point(serialize_to_array_end:checkin_proto.ChromeBuildProto)
   return target;
@@ -483,7 +471,7 @@ size_t ChromeBuildProto::ByteSizeLong() const {
 
   }
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    total_size += _internal_metadata_.unknown_fields<std::string>(::PROTOBUF_NAMESPACE_ID::internal::GetEmptyString).size();
+    total_size += _internal_metadata_.unknown_fields().size();
   }
   int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
@@ -499,14 +487,15 @@ void ChromeBuildProto::CheckTypeAndMergeFrom(
 void ChromeBuildProto::MergeFrom(const ChromeBuildProto& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:checkin_proto.ChromeBuildProto)
   GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom<std::string>(from._internal_metadata_);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   cached_has_bits = from._has_bits_[0];
   if (cached_has_bits & 0x00000007u) {
     if (cached_has_bits & 0x00000001u) {
-      _internal_set_chrome_version(from._internal_chrome_version());
+      _has_bits_[0] |= 0x00000001u;
+      chrome_version_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.chrome_version_);
     }
     if (cached_has_bits & 0x00000002u) {
       platform_ = from.platform_;
@@ -531,9 +520,10 @@ bool ChromeBuildProto::IsInitialized() const {
 
 void ChromeBuildProto::InternalSwap(ChromeBuildProto* other) {
   using std::swap;
-  _internal_metadata_.Swap<std::string>(&other->_internal_metadata_);
+  _internal_metadata_.Swap(&other->_internal_metadata_);
   swap(_has_bits_[0], other->_has_bits_[0]);
-  chrome_version_.Swap(&other->chrome_version_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  chrome_version_.Swap(&other->chrome_version_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+    GetArenaNoVirtual());
   swap(platform_, other->platform_);
   swap(channel_, other->channel_);
 }
@@ -580,30 +570,27 @@ const ::checkin_proto::ChromeBuildProto&
 AndroidCheckinProto::_Internal::chrome_build(const AndroidCheckinProto* msg) {
   return *msg->chrome_build_;
 }
-AndroidCheckinProto::AndroidCheckinProto(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::MessageLite(arena) {
+AndroidCheckinProto::AndroidCheckinProto()
+  : ::PROTOBUF_NAMESPACE_ID::MessageLite(), _internal_metadata_(nullptr) {
   SharedCtor();
-  RegisterArenaDtor(arena);
-  // @@protoc_insertion_point(arena_constructor:checkin_proto.AndroidCheckinProto)
+  // @@protoc_insertion_point(constructor:checkin_proto.AndroidCheckinProto)
 }
 AndroidCheckinProto::AndroidCheckinProto(const AndroidCheckinProto& from)
   : ::PROTOBUF_NAMESPACE_ID::MessageLite(),
+      _internal_metadata_(nullptr),
       _has_bits_(from._has_bits_) {
-  _internal_metadata_.MergeFrom<std::string>(from._internal_metadata_);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
   cell_operator_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (from._internal_has_cell_operator()) {
-    cell_operator_.SetLite(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from._internal_cell_operator(),
-      GetArena());
+    cell_operator_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.cell_operator_);
   }
   sim_operator_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (from._internal_has_sim_operator()) {
-    sim_operator_.SetLite(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from._internal_sim_operator(),
-      GetArena());
+    sim_operator_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.sim_operator_);
   }
   roaming_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (from._internal_has_roaming()) {
-    roaming_.SetLite(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from._internal_roaming(),
-      GetArena());
+    roaming_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.roaming_);
   }
   if (from._internal_has_chrome_build()) {
     chrome_build_ = new ::checkin_proto::ChromeBuildProto(*from.chrome_build_);
@@ -630,23 +617,15 @@ void AndroidCheckinProto::SharedCtor() {
 AndroidCheckinProto::~AndroidCheckinProto() {
   // @@protoc_insertion_point(destructor:checkin_proto.AndroidCheckinProto)
   SharedDtor();
-  _internal_metadata_.Delete<std::string>();
 }
 
 void AndroidCheckinProto::SharedDtor() {
-  GOOGLE_DCHECK(GetArena() == nullptr);
   cell_operator_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   sim_operator_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   roaming_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (this != internal_default_instance()) delete chrome_build_;
 }
 
-void AndroidCheckinProto::ArenaDtor(void* object) {
-  AndroidCheckinProto* _this = reinterpret_cast< AndroidCheckinProto* >(object);
-  (void)_this;
-}
-void AndroidCheckinProto::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
-}
 void AndroidCheckinProto::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
@@ -665,13 +644,13 @@ void AndroidCheckinProto::Clear() {
   cached_has_bits = _has_bits_[0];
   if (cached_has_bits & 0x0000000fu) {
     if (cached_has_bits & 0x00000001u) {
-      cell_operator_.ClearNonDefaultToEmpty();
+      cell_operator_.ClearNonDefaultToEmptyNoArena();
     }
     if (cached_has_bits & 0x00000002u) {
-      sim_operator_.ClearNonDefaultToEmpty();
+      sim_operator_.ClearNonDefaultToEmptyNoArena();
     }
     if (cached_has_bits & 0x00000004u) {
-      roaming_.ClearNonDefaultToEmpty();
+      roaming_.ClearNonDefaultToEmptyNoArena();
     }
     if (cached_has_bits & 0x00000008u) {
       GOOGLE_DCHECK(chrome_build_ != nullptr);
@@ -685,13 +664,12 @@ void AndroidCheckinProto::Clear() {
     type_ = 1;
   }
   _has_bits_.Clear();
-  _internal_metadata_.Clear<std::string>();
+  _internal_metadata_.Clear();
 }
 
 const char* AndroidCheckinProto::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   _Internal::HasBits has_bits{};
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -701,7 +679,7 @@ const char* AndroidCheckinProto::_InternalParse(const char* ptr, ::PROTOBUF_NAME
       case 2:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 16)) {
           _Internal::set_has_last_checkin_msec(&has_bits);
-          last_checkin_msec_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          last_checkin_msec_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -733,14 +711,14 @@ const char* AndroidCheckinProto::_InternalParse(const char* ptr, ::PROTOBUF_NAME
       case 9:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 72)) {
           _Internal::set_has_user_number(&has_bits);
-          user_number_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          user_number_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
       // optional .checkin_proto.DeviceType type = 12 [default = DEVICE_ANDROID_OS];
       case 12:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 96)) {
-          ::PROTOBUF_NAMESPACE_ID::uint64 val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          ::PROTOBUF_NAMESPACE_ID::uint64 val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
           CHK_(ptr);
           if (PROTOBUF_PREDICT_TRUE(::checkin_proto::DeviceType_IsValid(val))) {
             _internal_set_type(static_cast<::checkin_proto::DeviceType>(val));
@@ -762,9 +740,7 @@ const char* AndroidCheckinProto::_InternalParse(const char* ptr, ::PROTOBUF_NAME
           ctx->SetLastTag(tag);
           goto success;
         }
-        ptr = UnknownFieldParse(tag,
-            _internal_metadata_.mutable_unknown_fields<std::string>(),
-            ptr, ctx);
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
         CHK_(ptr != nullptr);
         continue;
       }
@@ -832,8 +808,8 @@ failure:
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = stream->WriteRaw(_internal_metadata_.unknown_fields<std::string>(::PROTOBUF_NAMESPACE_ID::internal::GetEmptyString).data(),
-        static_cast<int>(_internal_metadata_.unknown_fields<std::string>(::PROTOBUF_NAMESPACE_ID::internal::GetEmptyString).size()), target);
+    target = stream->WriteRaw(_internal_metadata_.unknown_fields().data(),
+        static_cast<int>(_internal_metadata_.unknown_fields().size()), target);
   }
   // @@protoc_insertion_point(serialize_to_array_end:checkin_proto.AndroidCheckinProto)
   return target;
@@ -899,7 +875,7 @@ size_t AndroidCheckinProto::ByteSizeLong() const {
 
   }
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    total_size += _internal_metadata_.unknown_fields<std::string>(::PROTOBUF_NAMESPACE_ID::internal::GetEmptyString).size();
+    total_size += _internal_metadata_.unknown_fields().size();
   }
   int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
@@ -915,20 +891,23 @@ void AndroidCheckinProto::CheckTypeAndMergeFrom(
 void AndroidCheckinProto::MergeFrom(const AndroidCheckinProto& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:checkin_proto.AndroidCheckinProto)
   GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom<std::string>(from._internal_metadata_);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   cached_has_bits = from._has_bits_[0];
   if (cached_has_bits & 0x0000007fu) {
     if (cached_has_bits & 0x00000001u) {
-      _internal_set_cell_operator(from._internal_cell_operator());
+      _has_bits_[0] |= 0x00000001u;
+      cell_operator_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.cell_operator_);
     }
     if (cached_has_bits & 0x00000002u) {
-      _internal_set_sim_operator(from._internal_sim_operator());
+      _has_bits_[0] |= 0x00000002u;
+      sim_operator_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.sim_operator_);
     }
     if (cached_has_bits & 0x00000004u) {
-      _internal_set_roaming(from._internal_roaming());
+      _has_bits_[0] |= 0x00000004u;
+      roaming_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.roaming_);
     }
     if (cached_has_bits & 0x00000008u) {
       _internal_mutable_chrome_build()->::checkin_proto::ChromeBuildProto::MergeFrom(from._internal_chrome_build());
@@ -959,17 +938,17 @@ bool AndroidCheckinProto::IsInitialized() const {
 
 void AndroidCheckinProto::InternalSwap(AndroidCheckinProto* other) {
   using std::swap;
-  _internal_metadata_.Swap<std::string>(&other->_internal_metadata_);
+  _internal_metadata_.Swap(&other->_internal_metadata_);
   swap(_has_bits_[0], other->_has_bits_[0]);
-  cell_operator_.Swap(&other->cell_operator_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-  sim_operator_.Swap(&other->sim_operator_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-  roaming_.Swap(&other->roaming_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(AndroidCheckinProto, user_number_)
-      + sizeof(AndroidCheckinProto::user_number_)
-      - PROTOBUF_FIELD_OFFSET(AndroidCheckinProto, chrome_build_)>(
-          reinterpret_cast<char*>(&chrome_build_),
-          reinterpret_cast<char*>(&other->chrome_build_));
+  cell_operator_.Swap(&other->cell_operator_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+    GetArenaNoVirtual());
+  sim_operator_.Swap(&other->sim_operator_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+    GetArenaNoVirtual());
+  roaming_.Swap(&other->roaming_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+    GetArenaNoVirtual());
+  swap(chrome_build_, other->chrome_build_);
+  swap(last_checkin_msec_, other->last_checkin_msec_);
+  swap(user_number_, other->user_number_);
   swap(type_, other->type_);
 }
 
@@ -982,10 +961,10 @@ std::string AndroidCheckinProto::GetTypeName() const {
 }  // namespace checkin_proto
 PROTOBUF_NAMESPACE_OPEN
 template<> PROTOBUF_NOINLINE ::checkin_proto::ChromeBuildProto* Arena::CreateMaybeMessage< ::checkin_proto::ChromeBuildProto >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::checkin_proto::ChromeBuildProto >(arena);
+  return Arena::CreateInternal< ::checkin_proto::ChromeBuildProto >(arena);
 }
 template<> PROTOBUF_NOINLINE ::checkin_proto::AndroidCheckinProto* Arena::CreateMaybeMessage< ::checkin_proto::AndroidCheckinProto >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::checkin_proto::AndroidCheckinProto >(arena);
+  return Arena::CreateInternal< ::checkin_proto::AndroidCheckinProto >(arena);
 }
 PROTOBUF_NAMESPACE_CLOSE
 

@@ -226,4 +226,5 @@ set_target_properties(libcrypto PROPERTIES IMPORTED_LOCATION ${CMAKE_SOURCE_DIR}
 # Specifies libraries CMake should link to your target library.
 target_link_libraries( # Specifies the target library.
         wpn-lib
-        ${liblog} ${libz} libcurl libssl libcrypto )
+        ${liblog} ${libz} libcurl libssl libcrypto
+)

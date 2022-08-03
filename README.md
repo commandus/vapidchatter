@@ -1,44 +1,110 @@
 # vapidchatter
 
-## Build SSL
+## Prerequisites
+
+- JDK >1.8
+- Gradle (optional). You can use Android Studio's Gradle plugin instead.
+
+### Install JDK
+```
+sudo apt install openjdk-17-jre-headless
+```
+
+### Install Gradle
+```
+wget --c https://downloads.gradle-dn.com/distributions/gradle-7.5-bin.zip
+mkdir /opt/gradle
+unzip -d /opt/gradle gradle-7.5-bin.zip
+export PATH=$PATH:/opt/gradle/gradle-7.5/bin
+```
+
+[How to install Gradle manually](https://gradle.org/install/)
+
+
+### Build OpenSSL
 
 Download OpenSSL 1.1.1f
 ```
-wget -c https://www.openssl.org/source/old/1.1.1/openssl-1.1.1f.tar.gz
+wget -c --no-check-certificate https://www.openssl.org/source/old/1.1.1/openssl-1.1.1f.tar.gz
 ```
 
+#### Build OpenSSL using script
+
+Check paths
 ```
-export NDK_ROOT=~/Android/Sdk/ndk-bundle/
+vi tools/build-curl.sh
+```
+
+Build
+
+```
+tools/build-curl.sh
+```
+
+#### Build OpenSSL manually
+
+```
 export ANDROID_NDK_HOME=~/Android/Sdk/ndk-bundle/
-PATH=$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/bin:$ANDROID_NDK_HOME/toolchains/arm-linux-androideabi-4.9/prebuilt/linux-x86_64/bin:$PATH
+
+or
+
+export ANDROID_NDK_HOME=/home/andrei/Android/Sdk/ndk/21.0.6113669
+
+./Configure android-arm -static -D__ANDROID_API__=2
+
+
+Please note 25.0.8775105 does not work!
+
+export PATH=$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/bin:$ANDROID_NDK_HOME/toolchains/arm-linux-androideabi-4.9/prebuilt/linux-x86_64/bin:$PATH
+or
+export PATH=/home/andrei/Android/Sdk/ndk/21.0.6113669/toolchains/llvm/prebuilt/linux-x86_64/bin:/opt/gradle/gradle-7.5/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin
 
 make build_generated
 
 ./Configure android-arm64 -static -D__ANDROID_API__=21
 make build_libs
+cp libcrypto.a libssl.a ~/src/vapidchatter/app/src/main/jniLibs/arm64-v8a/
 
 make clean
 ./Configure android-arm -static -D__ANDROID_API__=21
 make build_libs
+cp libcrypto.a libssl.a ~/src/vapidchatter/app/src/main/jniLibs/armeabi-v7a/
 ```
 
-Copy SSL headers
+Required OpenSSL headers already in the source directory app/src/main/third_party/openssl.
+
+### Build Curl
+
+First install OpenSSL (Curl depends on it).
+
+Download Curl source
+```
+cd ~/lib
+wget https://curl.haxx.se/download/curl-7.69.1.tar.gz
+tar xvfz curl-7.69.1.tar.gz
+```
+
+Check paths
+```
+vi tools/build-curl.sh
+```
+
+Build
 
 ```
-cd /home/andrei/git/curl-android-ios/openssl/include/openssl
-cp asn1.h crypto.h ecdsa.h opensslv.h  srtp.h stack.h bio.h dh.h ec.h lhash.h ossl_typ.h rand.h symhacks.h bn.h dsa.h e_os2.h objects.h pem2.h rsa.h ssl2.h tls1.h buffer.h dtls1.h evp.h obj_mac.h pem.h safestack.h ssl3.h x509.h comp.h ecdh.h hmac.h opensslconf.h pkcs7.h sha.h ssl.h x509_vfy.h cryptoerr.h comperr.h bioerr.h buffererr.h evperr.h asn1err.h bnerr.h objectserr.h ecerr.h rsaerr.h dherr.h dsaerr.h x509err.h pkcs7err.h pemerr.h async.h asyncerr.h ct.h cterr.h randerr.h kdf.h kdferr.h /home/andrei/src/vapidchatter/app/src/main/third_party/openssl
+tools/build-curl.sh
 ```
 
-https://github.com/gcesarmza/curl-android-ios
+Required Curl headers already in the source directory app/src/main/third_party/curl.
 
-https://github.com/gcesarmza/curl-android-ios.git
 
-git submodule init && git submodule update
+## Build
 
-cd curl-android-ios/curl-compile-scripts
- export NDK_ROOT=~/Android/Sdk/ndk-bundle/
-./build_Android.sh
-
+```
+cd ~/src/vapidchatter
+tools/copy-dependencies.sh
+gradle build
+```
 
 ## Install gRPC
 
