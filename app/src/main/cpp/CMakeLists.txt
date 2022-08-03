@@ -1,33 +1,37 @@
 PROJECT(wpnlib)
 cmake_minimum_required(VERSION 3.4.1)
 
-set (OPENSSL_INC /home/andrei/lib/openssl-1.1.1f/include)
-set (PROTOBUF_ROOT /home/andrei/lib/grpc/third_party/protobuf/src)
-set (WPN_ROOT /home/andrei/src/wpn)
-set (OPENSSL_ROOT /home/andrei/lib/openssl-1.1.1f)
-set (OPENSSL_INC ${OPENSSL_ROOT}/include)
-set (CURL_ROOT /home/andrei/lib/curl-7.69.1)
-set (CURL_INC ${CURL_ROOT}/include)
-
+set (DEP_ROOT ../third_party)
+set (PROTOBUF_ROOT ${DEP_ROOT}/protobuf)
+set (WPN_ROOT ${DEP_ROOT}/wpn)
 set (MCS_GEN_ROOT ${WPN_ROOT}/mcs/gen)
-set (ECEC_ROOT ${WPN_ROOT}/third_party/ecec)
-set (QR_ROOT ${WPN_ROOT}/third_party/nayuki/QR-Code-generator)
+set (ECEC_ROOT ${DEP_ROOT}/ecec)
+set (QR_ROOT ${DEP_ROOT}/nayuki/QR-Code-generator)
+
+set (CURL_ROOT ${DEP_ROOT}/curl)
+set (CURL_INC ${CURL_ROOT}/include)
+set (OPENSSL_ROOT ${DEP_ROOT}/openssl-1.1.1f)
+set (OPENSSL_INC ${OPENSSL_ROOT}/include)
 
 set (PROTOS ${WPN_ROOT}/mcs/mcs.proto ${WPN_ROOT}/mcs/android_checkin.proto
         ${WPN_ROOT}/mcs/checkin.proto)
 set (EXTGENMCS ${WPN_ROOT}/mcs.pb.h ${WPN_ROOT}/android_checkin.pb.h ${WPN_ROOT}/checkin.pb.h
         ${WPN_ROOT}/mcs.pb.cc ${WPN_ROOT}/android_checkin.pb.cc ${WPN_ROOT}/checkin.pb.cc)
-add_custom_command(
-        OUTPUT
-            ${MCS_GEN_ROOT}/mcs.pb.cc
-            ${MCS_GEN_ROOT}/android_checkin.pb.cc
-            ${MCS_GEN_ROOT}/checkin.pb.cc
-        COMMAND protoc -I ${WPN_ROOT}/mcs --cpp_out=. ${PROTOS} && mv ${EXTGENMCS} mcs/gen
-        WORKING_DIRECTORY ${WPN_ROOT}
+
+# add_custom_command(
+#        OUTPUT
+#            ${MCS_GEN_ROOT}/mcs.pb.cc
+#            ${MCS_GEN_ROOT}/android_checkin.pb.cc
+#            ${MCS_GEN_ROOT}/checkin.pb.cc
+#        COMMAND protoc -I ${WPN_ROOT}/mcs --cpp_out=. ${PROTOS} && mv ${EXTGENMCS} mcs/gen
+#        WORKING_DIRECTORY ${WPN_ROOT}
+#)
+
+include_directories(
+        ${DEP_ROOT} ${PROTOBUF_ROOT}
+        ${WPN_ROOT} ${ECEC_ROOT} ${MCS_GEN_ROOT}
+        ${RAPIDJSON_ROOT} ${ECEC_ROOT}
 )
-include_directories(${PROTOBUF_ROOT} ${OPENSSL_INC}
-        ${WPN_ROOT} ${WPN_ROOT}/third_party ${WPN_ROOT}/third_party/ecec ${MCS_GEN_ROOT}
-        ${OPENSSL_INC} ${CURL_INC} ${CURL_ECEC_ROOT})
 set(PROTO_LITE_SRC
         ${PROTOBUF_ROOT}/google/protobuf/stubs/bytestream.cc
         ${PROTOBUF_ROOT}/google/protobuf/stubs/bytestream.h
