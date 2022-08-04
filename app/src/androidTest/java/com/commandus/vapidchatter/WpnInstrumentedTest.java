@@ -33,128 +33,139 @@ import java.util.List;
 @RunWith(AndroidJUnit4.class)
 public class WpnInstrumentedTest {
     private static final String TAG = WpnInstrumentedTest.class.getSimpleName();
+    private void print(String s) {
+        Log.i(TAG, s);
+        // System.out.println(s);
+    }
 
     @Test
-    public void check01() {
+    public void checkRegistration() {
         // Context of the app under test.
-        Log.i(TAG, "=================================");
+        print("=================================");
+        print("checkRegistration");
+        
+        print("Version: " + wpnAndroid.version());
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
         String filename = appContext.getFilesDir() + "/wpn.js";
-        Log.i(TAG, "config file: " + filename);
+        print("config file: " + filename);
 
         String env = wpnAndroid.openEnv(filename);
-        Log.i(TAG, "env descriptor: " + env);
-        Log.i(TAG, "env code: " + wpnAndroid.envErrorCode(env));
-        Log.i(TAG, "env error description: " + wpnAndroid.envErrorDescription(env));
+        print("env descriptor: " + env);
+        print("env code: " + wpnAndroid.envErrorCode(env));
+        print("env error description: " + wpnAndroid.envErrorDescription(env));
         String js = wpnAndroid.env2json(env);
-        Log.i(TAG, "config: " + js);
+        print("config: " + js);
 
         String reg = wpnAndroid.openRegistryClientEnv(env);
-        Log.i(TAG, "registration client descriptor: " + reg);
+        print("registration client descriptor: " + reg);
 
         boolean isRegistered = wpnAndroid.validateRegistration(reg);
-        Log.i(TAG, "isRegistered: " + isRegistered);
+        print("isRegistered: " + isRegistered);
         if (isRegistered) {
-            Log.i(TAG, "Registration success");
-            Log.i(TAG, "registration client code: " + wpnAndroid.regErrorCode(reg));
-            Log.i(TAG, "registration client error description: " + wpnAndroid.regErrorDescription(reg));
+            print("Registration success");
+            print("registration client code: " + wpnAndroid.regErrorCode(reg));
+            print("registration client error description: " + wpnAndroid.regErrorDescription(reg));
         } else {
-            Log.e(TAG, "Error registration");
-            Log.e(TAG, "registration client code: " + wpnAndroid.regErrorCode(reg));
-            Log.e(TAG, "registration client error description: " + wpnAndroid.regErrorDescription(reg));
+            print("Error registration");
+            print("registration client code: " + wpnAndroid.regErrorCode(reg));
+            print("registration client error description: " + wpnAndroid.regErrorDescription(reg));
         }
 
-        Log.i(TAG, "registration done------");
+        print("registration done------");
 
         js = wpnAndroid.env2json(env);
-        Log.i(TAG, "config: " + js);
+        print("config: " + js);
         wpnAndroid.closeRegistryClientEnv(reg);
 
         wpnAndroid.saveEnv(env);
         wpnAndroid.closeEnv(env);
-        Log.i(TAG, "=================================");
+        print("=================================");
     }
 
     @Test
-    public void check02() {
-        Log.i(TAG, "=================================");
+    public void checkClientFromContext() {
+        print("=================================");
+        print("checkClientFromContext");
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
         VapidClient c = new VapidClient(appContext);
-        Log.i(TAG, c.getConfig().toString());
-        Log.i(TAG, "=================================");
+        print(c.getConfig().toString());
+        print("=================================");
     }
 
     @Test
-    public void check03() {
-        Log.i(TAG, "=================================");
+    public void checkClientFromFile() {
+        print("=================================");
+        print("checkClientFromFile");
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
         String filename = appContext.getFilesDir() + "/wpn.js";
-        Log.i(TAG, "config file: " + filename);
+        print("config file: " + filename);
         VapidClient c = new VapidClient(filename);
-        Log.i(TAG, c.getConfig().toString());
-        Log.i(TAG, "=================================");
+        print(c.getConfig().toString());
+        print("=================================");
     }
 
 
     @Test
     public void checkIP6GlobalAddress() {
-        Log.i(TAG, "=================================");
+        print("=================================");
         String g = Address.getIPv6GlobalAddress();
-        Log.i(TAG, g);
-        Log.i(TAG, "=================================");
+        print("IP6GlobalAddress: " + g);
+        print("=================================");
     }
 
     @Test
     public void checkIPAddress() {
-        Log.i(TAG, "=================================");
+        print("=================================");
         try {
             List<NetworkInterface> interfaces = Collections.list(NetworkInterface.getNetworkInterfaces());
             for (NetworkInterface intf : interfaces) {
                 if (intf.isLoopback()) {
                     continue;
                 }
-                Log.i(TAG, "Interface " + intf.getDisplayName() + " " + intf.getName()
+                print("Interface " + intf.getDisplayName() + " " + intf.getName()
                         + " " + intf.toString());
                 List<InetAddress> addrs = Collections.list(intf.getInetAddresses());
                 for (InetAddress addr : addrs) {
-                    Log.i(TAG, "IP " + addr.toString());
+                    print("IP " + addr.toString());
                     if (!addr.isLoopbackAddress()) {
                         String h = addr.getHostAddress();
                         if (addr instanceof Inet4Address) {
-                            Log.i(TAG, "IP v4 " + h);
+                            print("IP v4 " + h);
                         }
                         if (addr instanceof Inet6Address) {
                             Inet6Address a = (Inet6Address) addr;
                             if (a.isSiteLocalAddress() || a.isLinkLocalAddress()) {
-                                Log.i(TAG, "Local IP v6 " + h);
+                                print("Local IP v6 " + h);
                                 int delim = h.indexOf('%'); // drop ip6 zone suffix
                                 String hh = delim < 0 ? h : h.substring(0, delim);
-                                Log.i(TAG, "Local IP v6 " + hh);
+                                print("Local IP v6 " + hh);
                             } else {
-                                Log.i(TAG, "Global IP v6 " + h);
+                                print("Global IP v6 " + h);
                                 int delim = h.indexOf('%'); // drop ip6 zone suffix
                                 String hh = delim < 0 ? h : h.substring(0, delim);
-                                Log.i(TAG, "Global IP v6 " + hh);
+                                print("Global IP v6 " + hh);
                             }
                         }
                     }
                 }
             }
         } catch (Exception e) {
-            Log.e(TAG, e.toString());
+            print(e.toString());
         }
-        Log.i(TAG, "=================================");
+        print("=================================");
     }
 
     @Test
     public void checkSubscriptionsAdapter() {
-        Log.i(TAG, "=================================");
+        print("=================================");
+        print("checkSubscriptionsAdapter");
+        
         Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
         VapidClient client = Settings.getVapidClient(context);
         Config config = client.getConfig();
-        Log.i(TAG, "Subscriptions (0): " + config.subscriptions.toString());
+        print("Subscriptions (0): " + config.subscriptions.toString());
         for (int i = 0; i < 10; i++) {
             String id = String.valueOf(i);
             String name = "Subscription " + id;
@@ -166,10 +177,10 @@ public class WpnInstrumentedTest {
             );
             config.subscriptions.subscriptions.add(subscription);
         }
-        Log.i(TAG, "Subscriptions(1): " + config.subscriptions.toString());
+        print("Subscriptions(1): " + config.subscriptions.toString());
         config.subscriptions.subscriptions.clear();
         Settings.getInstance(context).save(config);
-        Log.i(TAG, "=================================");
+        print("=================================");
     }
 
 }

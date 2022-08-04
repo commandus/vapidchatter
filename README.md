@@ -106,6 +106,26 @@ tools/copy-dependencies.sh
 gradle build
 ```
 
+## Tests
+
+Run emulator:
+```
+cd ~/Android/Sdk/tools
+./emulator -list-avds
+./emulator -avd Nexus_5_API_24
+```
+
+Start tests:
+```
+./gradlew connectedAndroidTets
+```
+
+Check output files for each test:
+```
+ls ~/src/vapidchatter/app/build/outputs/androidTest-results/connected/*
+```
+
+
 ## Install gRPC
 
 ``` 

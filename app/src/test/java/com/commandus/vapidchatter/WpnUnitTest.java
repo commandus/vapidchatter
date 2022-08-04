@@ -5,6 +5,7 @@ import android.util.Log;
 import com.commandus.vapidchatter.wpn.SubscriptionPropertiesList;
 import com.commandus.vapidchatter.wpn.wpnAndroid;
 
+
 import org.junit.Test;
 
 import java.lang.reflect.Field;
@@ -18,6 +19,7 @@ import static org.junit.Assert.*;
  */
 public class WpnUnitTest {
     private static final String TAG = WpnUnitTest.class.getSimpleName();
+
     @Test
     public void version() {
     }
@@ -34,4 +36,5 @@ public class WpnUnitTest {
         System.out.println("list: " + l.toString());
         System.out.println("=================================");
     }
+
 }
