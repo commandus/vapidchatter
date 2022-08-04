@@ -106,6 +106,21 @@ public class WpnInstrumentedTest {
         print("=================================");
     }
 
+    @Test
+    public void checkClientSaveAs() {
+        print("=================================");
+        print("checkClientSaveAs");
+        // Context of the app under test.
+        Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
+        String filename = appContext.getFilesDir() + "/wpn-2.js";
+        print("config file: " + filename);
+        String env = wpnAndroid.openEnv(filename);
+        wpnAndroid.saveEnvAs(env, filename);
+        wpnAndroid.closeEnv(filename);
+        VapidClient c = new VapidClient(filename);
+        print(c.getConfig().toString());
+        print("=================================");
+    }
 
     @Test
     public void checkIP6GlobalAddress() {

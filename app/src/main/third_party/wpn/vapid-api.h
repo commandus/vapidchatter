@@ -6,6 +6,8 @@ void closeEnv(void *env);
 
 void saveEnv(void *env);
 
+void saveEnvAs(void *env, const std::string &fileName);
+
 int envErrorCode(void *env);
 
 std::string envErrorDescription(void *env);

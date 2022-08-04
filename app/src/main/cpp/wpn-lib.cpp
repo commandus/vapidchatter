@@ -178,13 +178,13 @@ Java_com_commandus_vapidchatter_wpn_wpnAndroid_closeEnv
 
 /**
  * Save WPN environment  config in associated JSON file.
- * You need call wpnAndroid.saceEnv(descriptor) to
+ * You need call wpnAndroid.saveEnv(descriptor) to
  * keep changes in the JSON file so after re-start client
  * can read subscriptions from the file.
  * @param descriptor WPN environment  Java descriptor
  * Usage:
  * import com.commandus.vapidchatter.wpn.*;
- * wpnAndroid.saceEnv(descriptor);
+ * wpnAndroid.saveEnv(descriptor);
  */
 extern "C" JNIEXPORT void JNICALL
 Java_com_commandus_vapidchatter_wpn_wpnAndroid_saveEnv
@@ -195,6 +195,28 @@ Java_com_commandus_vapidchatter_wpn_wpnAndroid_saveEnv
 )
 {
     saveEnv(descriptorJ2C(env->GetStringUTFChars(descriptor, NULL)));
+}
+
+/**
+ * Save WPN environment config in specified JSON file.
+ * You need call wpnAndroid.saveEnv(descriptor, newFileName) to
+ * save JSON file so client can have more than one identifiers.
+ * @param descriptor WPN environment  Java descriptor
+ * @param filename new file name
+ * Usage:
+ * import com.commandus.vapidchatter.wpn.*;
+ * wpnAndroid.saveEnv(descriptor, newFileName);
+ */
+extern "C" JNIEXPORT void JNICALL
+Java_com_commandus_vapidchatter_wpn_wpnAndroid_saveEnvAs
+(
+    JNIEnv* env,
+    jobject __unused thisObject,
+    jstring descriptor,
+    jstring fileName
+)
+{
+    saveEnvAs(descriptorJ2C(env->GetStringUTFChars(descriptor, NULL)), env->GetStringUTFChars(fileName, NULL));
 }
 
 /**

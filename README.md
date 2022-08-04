@@ -108,7 +108,7 @@ gradle build
 
 ## Tests
 
-Run emulator:
+Run emulator using tools/start-emulator.sh or:
 ```
 cd ~/Android/Sdk/tools
 ./emulator -list-avds
@@ -117,7 +117,7 @@ cd ~/Android/Sdk/tools
 
 Start tests:
 ```
-./gradlew connectedAndroidTets
+./gradlew connectedAndroidTest
 ```
 
 Check output files for each test:

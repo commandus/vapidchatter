@@ -24,6 +24,14 @@ void saveEnv(void *env) {
   }
 }
 
+void saveEnvAs(void *env, const std::string &fileName) {
+  if (env) {
+      ConfigFile *wpnConfig = (ConfigFile *) env;
+      wpnConfig->fileName = fileName;
+      wpnConfig->save();
+  }
+}
+
 void setConfigJson(
     void *env,
     const std::string &json
