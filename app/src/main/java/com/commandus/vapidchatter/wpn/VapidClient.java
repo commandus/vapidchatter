@@ -43,12 +43,23 @@ public class VapidClient {
         return 0;
     }
 
-    public boolean save(Config config) {
-        setConfig(config);
+    public boolean save() {
         String js = wpnAndroid.env2json(envDescriptor);
         Log.d(TAG, "Save config: " + js);
         wpnAndroid.saveEnv(envDescriptor);
         return true;
+    }
+
+    public boolean saveAs(String fileName) {
+        String js = wpnAndroid.env2json(envDescriptor);
+        Log.d(TAG, "SaveAs config: " + js);
+        wpnAndroid.saveEnvAs(envDescriptor, fileName);
+        return true;
+    }
+
+    public boolean save(Config config) {
+        setConfig(config);
+        return save();
     }
 
     public void disconnect() {

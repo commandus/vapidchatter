@@ -122,6 +122,7 @@ Start tests:
 
 Check output files for each test:
 ```
+cd ~/src/vapidchatter/app/build/outputs/androidTest-results/connected/
 ls ~/src/vapidchatter/app/build/outputs/androidTest-results/connected/*
 ```
 

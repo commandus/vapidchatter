@@ -78,7 +78,7 @@ public:
 	);
 
 	/**
-	 * Re-subscribe (in case user ubsubscribe and subscribe again)
+	 * Re-subscribe (in case user unsubscribe and subscribe again)
 	 * @return count of succuessfully loaded new subscriptions from the registry
 	 **/
 	int reSubscribe

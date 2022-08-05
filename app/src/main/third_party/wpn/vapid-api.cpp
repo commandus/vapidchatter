@@ -132,7 +132,6 @@ bool isTokenValid(const std::string &value) {
     return Subscription::isTokenValid(value);
 }
 
-
 bool subscribe2VapidPublicKey(
     std::string &retval,
     void *env,
@@ -141,11 +140,11 @@ bool subscribe2VapidPublicKey(
 )
 {
     if (!env)
-        return NULL;
+        return false;
     if (!WpnKeys::isPublicKeyValid(key))
-        return NULL;
+        return false;
     if (!WpnKeys::isAuthSecretValid(authSecret))
-        return NULL;
+        return false;
 
     ConfigFile *config = (ConfigFile *) env;
 
@@ -159,7 +158,7 @@ bool subscribe2VapidPublicKey(
     std::string appId = config->androidCredentials->getAppId();
 
     int r = subscribe(&retval, &headers, token, pushset,
-                      toString(android_id), toString(security_number), appId, key, 0
+      toString(android_id), toString(security_number), appId, key, 0
     );
     Subscription subscription;
     if ((r >= 200) && (r < 300)) {

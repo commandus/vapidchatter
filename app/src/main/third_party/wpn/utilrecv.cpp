@@ -264,7 +264,7 @@ std::string tagNmessageToString
 	google::protobuf::io::StringOutputStream ss(&s);
 	google::protobuf::io::CodedOutputStream *codedOutput = new google::protobuf::io::CodedOutputStream(&ss);
 	codedOutput->WriteRaw(&tag, 1);
-	int sz = ((google::protobuf::MessageLite*) msg)->ByteSize();
+	int sz = ((google::protobuf::MessageLite*) msg)->ByteSizeLong();
 	codedOutput->WriteVarint32(sz);
 	((google::protobuf::MessageLite*) msg)->SerializeToCodedStream(codedOutput);
 	delete codedOutput;

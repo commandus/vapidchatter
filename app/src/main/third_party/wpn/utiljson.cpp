@@ -358,7 +358,7 @@ int parseNotificationJson
 	Value &n = d["notification"];
 	if (n.IsObject()) {
 		if (n.HasMember("title")) {
-			Value &v = v["title"];
+			Value &v = n["title"];
 			if (v.IsString())
 				title = v.GetString();
 		}

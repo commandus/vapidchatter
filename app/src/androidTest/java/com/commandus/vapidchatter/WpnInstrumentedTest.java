@@ -112,11 +112,13 @@ public class WpnInstrumentedTest {
         print("checkClientSaveAs");
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
+        VapidClient c = new VapidClient(appContext);
+
         String filename = appContext.getFilesDir() + "/wpn-2.js";
-        print("config file: " + filename);
-        String env = wpnAndroid.openEnv(filename);
-        wpnAndroid.saveEnvAs(env, filename);
-        wpnAndroid.closeEnv(filename);
+        print("Save new config file: " + filename);
+        
+        c.saveAs(fileName);
+        
         VapidClient c = new VapidClient(filename);
         print(c.getConfig().toString());
         print("=================================");
